@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+html,
+body {
+  height: 100%;
+  background-color: #0d0d0d; /* deep black background */
+  color: #f9f9f9;
+  font-family: 'Poppins', sans-serif;
+  scroll-behavior: smooth;
+}
+
+#root {
+  background-color: #0d0d0d; /* ensures the root div stays dark */
+}
