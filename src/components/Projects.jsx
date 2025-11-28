@@ -9,7 +9,7 @@ const Projects = () => {
       title: "GadgetHeaven",
       description:
         "Responsive React gadget store with Tailwind CSS, featuring product browsing, cart, and wishlist. A full-featured e-commerce platform with smooth navigation, dynamic cart management, and real-time updates using Context API and LocalStorage.",
-      image: "/public/Screenshot 2025-11-28 141109.png",
+      image: "/Screenshot%202025-11-28%20141109.png",
       tools: [
         "React",
         "Tailwind CSS",
@@ -26,7 +26,7 @@ const Projects = () => {
       title: "PetAdoption (Peddy)",
       description:
         "A responsive web app built with HTML, Tailwind CSS, and JavaScript (ES6) that lets users browse, filter, and adopt pets with interactive modals, price sorting, and a simulated adoption process. Features dynamic pet listing and seamless user experience.",
-      image: "/public/peddy.png",
+      image: "/peddy.png",
       tools: [
         "HTML5",
         "CSS3",
@@ -46,7 +46,7 @@ const Projects = () => {
       title: "BookVibe",
       description:
         "Responsive book listing app with read-list management, sorting, and toast notifications using React, Tailwind CSS, and React Router. Allows users to browse books, manage their reading list, and track their favorite books with local storage integration.",
-      image: "/public/book Vibe.png",
+      image: "/book%20Vibe.png",
       tools: [
         "React.js",
         "React Router",
