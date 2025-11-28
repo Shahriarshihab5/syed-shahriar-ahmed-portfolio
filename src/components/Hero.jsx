@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import heroImg from '../assets/cv.png'
+import { TypeAnimation } from "react-type-animation";
+import heroImg from '../assets/cv.png';
 
 const Hero = () => {
   return (
@@ -19,12 +20,27 @@ const Hero = () => {
       >
         <p className="text-lg text-primary font-semibold mb-2">Hello 👋</p>
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
-
-          I’m <span className="text-primary">Syed Shahriar Ahmed</span>
+          I'm <span className="text-primary">Syed Shahriar Ahmed</span>
         </h1>
-        <h2 className="text-2xl md:text-3xl font-semibold text-[#cfcfcf] mb-6">
-
-          Front-End Developer & CSE Student
+        
+        {/* Typing Animation */}
+        <h2 className="text-2xl md:text-3xl font-semibold mb-6 min-h-[3rem]">
+          <TypeAnimation
+            sequence={[
+              "Front-End Developer",
+              2000,
+              "CSE Student",
+              2000,
+              "React Enthusiast",
+              2000,
+              "Problem Solver",
+              2000,
+            ]}
+            wrapper="span"
+            speed={50}
+            repeat={Infinity}
+            className="text-primary"
+          />
         </h2>
 
         <p className="text-gray-400 mb-8 max-w-md leading-relaxed">
@@ -44,7 +60,7 @@ const Hero = () => {
             Got a project?
           </motion.a>
           <motion.a
-            href="/resume.pdf"
+            href="/src/assets/Syed-Shahriar-Ahmed-Resume_.pdf"
             download
             whileHover={{ scale: 1.05 }}
             className="px-6 py-3 rounded-lg border border-primary text-primary font-semibold hover:bg-primary hover:text-dark transition-all"
