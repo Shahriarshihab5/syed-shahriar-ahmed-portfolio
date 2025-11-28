@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Projects from "./components/Projects";
+import Research from "./components/Research";  // Add this
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import ScrollProgressBar from "./components/ScrollProgressBar";
@@ -33,6 +34,7 @@ function App() {
             <Hero />
             <About />
             <Projects />
+            <Research />  {/* Add this */}
             <Contact />
             <Footer />
             <Chatbot />
