@@ -13,6 +13,7 @@ body {
   background-color: #0d0d0d; /* ensures the root div stays dark */
 }
 
+/* Navbar name gradient animation - Orange to White */
 @keyframes gradient {
   0% {
     background-position: 0% center;
@@ -25,6 +26,7 @@ body {
 .animate-gradient {
   animation: gradient 3s linear infinite;
 }
+
 /* Chatbot button pulsing glow animation */
 @keyframes pulse-glow {
   0%, 100% {
@@ -45,4 +47,122 @@ body {
 
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
+}
+@import "tailwindcss";
+
+html,
+body {
+  height: 100%;
+  background-color: #0d0d0d; /* deep black background */
+  color: #f9f9f9;
+  font-family: 'Poppins', sans-serif;
+  scroll-behavior: smooth;
+}
+
+#root {
+  background-color: #0d0d0d; /* ensures the root div stays dark */
+}
+
+/* Navbar name gradient animation - Orange to White */
+@keyframes gradient {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.animate-gradient {
+  animation: gradient 3s linear infinite;
+}
+
+/* Chatbot button pulsing glow animation */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 
+      0 0 20px rgba(255, 76, 41, 0.6),
+      0 0 40px rgba(255, 76, 41, 0.4),
+      0 0 60px rgba(255, 76, 41, 0.2);
+    border-color: white;
+  }
+  50% {
+    box-shadow: 
+      0 0 30px rgba(255, 255, 255, 0.8),
+      0 0 60px rgba(255, 76, 41, 0.6),
+      0 0 90px rgba(255, 76, 41, 0.4);
+    border-color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Navbar backdrop blur effect */
+.navbar-blur {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(13, 13, 13, 0.95);
+}
+
+/* Nav link animated underline */
+.nav-link {
+  position: relative;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #ff4c29;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link.active::after {
+  width: 100%;
+}
+
+.nav-link.active span {
+  color: #ff4c29;
+}
+
+/* Resume button shimmer effect */
+@keyframes shimmer-button {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.resume-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.resume-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.resume-button:hover::before {
+  animation: shimmer-button 1s ease-in-out;
 }
