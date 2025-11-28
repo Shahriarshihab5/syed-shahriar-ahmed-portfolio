@@ -46,6 +46,16 @@ const Chatbot = () => {
   const getBotResponse = (userMessage) => {
     const msg = userMessage.toLowerCase();
 
+    // Secret Easter Egg - Jangu
+    if (fuzzyMatch(msg, ["jangu", "i am jangu", "im jangu"])) {
+      return "Hey thesis mate, welcome! 🎉 Great to see you here! How can I help you today?";
+    }
+
+    // Secret Easter Egg - Seyam/Siam
+    if (fuzzyMatch(msg, ["seyam", "siam", "i am seyam", "i am siam", "im seyam", "im siam"])) {
+      return "Hey! Give me 1120 taka! 💸😂";
+    }
+
     // Skills
     if (fuzzyMatch(msg, ["skill", "skills", "tech", "technology", "stack"])) {
       return "Shahriar is skilled in React, JavaScript, HTML, CSS, Tailwind CSS, Firebase, Node.js, MongoDB, and more! He's also learning full-stack development. Want to know about specific technologies?";
