@@ -24,10 +24,7 @@ const Chatbot = () => {
 
   // Normalize text for better matching (handles typos)
   const normalizeText = (text) => {
-    return text
-      .toLowerCase()
-      .replace(/[^a-z0-9\s]/g, "")
-      .trim();
+    return text.toLowerCase().replace(/[^a-z0-9\s]/g, "").trim();
   };
 
   // Fuzzy matching helper
@@ -156,7 +153,7 @@ const Chatbot = () => {
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="fixed bottom-8 right-8 z-50 w-16 h-16 rounded-full bg-primary shadow-lg flex items-center justify-center border-4 border-white animate-pulse-glow"
+        className="fixed z-50 w-16 h-16 rounded-full bg-primary shadow-lg flex items-center justify-center border-4 border-white animate-pulse-glow bottom-24 md:bottom-8 right-8"
         aria-label="Toggle chatbot"
       >
         {isOpen ? (
@@ -174,7 +171,7 @@ const Chatbot = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-28 right-8 z-50 w-96 h-[500px] bg-[#1a1a1a] rounded-2xl shadow-2xl border border-[#2a2a2a] flex flex-col overflow-hidden"
+            className="fixed bottom-32 md:bottom-28 right-8 z-50 w-96 h-[500px] bg-[#1a1a1a] rounded-2xl shadow-2xl border border-[#2a2a2a] flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="bg-primary p-4 flex items-center gap-3">

@@ -83,8 +83,8 @@ const Navbar = () => {
 
           {/* Resume Button */}
           <a
-            href="/Syed-Shahriar-Ahmed-Resume_.pdf"
-            download="Syed-Shahriar-Ahmed-Resume.pdf"
+            href="Syed_Shahriar_Ahmed_Resume.pdf"
+            download="Syed_Shahriar_Ahmed_Resume.pdf"
             className="px-6 py-2.5 bg-primary text-white font-semibold rounded-lg shadow-lg hover:shadow-[0_0_20px_rgba(255,76,41,0.6)] hover:scale-105 transition-all duration-300 border-2 border-white"
           >
             Resume
