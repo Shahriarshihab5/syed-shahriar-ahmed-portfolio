@@ -4,8 +4,31 @@ import RevealOnScroll from "./RevealOnScroll";
 
 const Projects = () => {
   const projects = [
+
     {
       id: 1,
+      title: "X-ray Osteoarthritis Detection System",
+      description:
+        "Full-stack AI-powered web application that allows users to upload X-ray images and receive osteoarthritis predictions via a REST API. Includes Grad-CAM visualizations for model interpretability and real-world deployment.",
+      image: "/X-ray.png", 
+      tools: [
+        "Python",
+        "Deep Learning",
+        "Ensemble Models",
+        "Grad-CAM",
+        "Flask",
+        "REST API",
+        "React.js",
+        "Hugging Face",
+        "HTML",
+        "CSS",
+      ],
+      liveLink: "https://osteodetector-frontend.vercel.app/",
+      
+      githubLink: "https://github.com/Shahriarshihab5/osteodetector-backend", 
+    },
+    {
+      id: 2,
       title: "GadgetHeaven",
       description:
         "Responsive React gadget store with Tailwind CSS, featuring product browsing, cart, and wishlist. A full-featured e-commerce platform with smooth navigation, dynamic cart management, and real-time updates using Context API and LocalStorage.",
@@ -22,7 +45,7 @@ const Projects = () => {
       githubLink: "https://github.com/Shahriarshihab5/Gadget-Heaven",
     },
     {
-      id: 2,
+      id: 3,
       title: "PetAdoption (Peddy)",
       description:
         "A responsive web app built with HTML, Tailwind CSS, and JavaScript (ES6) that lets users browse, filter, and adopt pets with interactive modals, price sorting, and a simulated adoption process. Features dynamic pet listing and seamless user experience.",
@@ -42,7 +65,7 @@ const Projects = () => {
         "https://github.com/Shahriarshihab5/CSE416-Web-Engineering-Lab-Project",
     },
     {
-      id: 3,
+      id: 4,
       title: "BookVibe",
       description:
         "Responsive book listing app with read-list management, sorting, and toast notifications using React, Tailwind CSS, and React Router. Allows users to browse books, manage their reading list, and track their favorite books with local storage integration.",
