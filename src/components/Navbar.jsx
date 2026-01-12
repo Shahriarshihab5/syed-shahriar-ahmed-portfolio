@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-scroll";
 import { motion } from "framer-motion";
 import {
@@ -11,6 +11,20 @@ import {
 
 const Navbar = () => {
   const [activeLink, setActiveLink] = useState("home");
+  const [offset, setOffset] = useState(-80);
+
+  // Fix offset & layout on first load
+  useEffect(() => {
+    const updateOffset = () => {
+      setOffset(window.innerWidth < 768 ? -60 : -80);
+    };
+
+    updateOffset();
+    window.scrollTo(0, 0);
+    window.addEventListener("resize", updateOffset);
+
+    return () => window.removeEventListener("resize", updateOffset);
+  }, []);
 
   const navLinks = [
     { id: "home", text: "Home", icon: Home },
@@ -35,7 +49,7 @@ const Navbar = () => {
             to="home"
             smooth
             duration={500}
-            offset={-80}
+            offset={offset}
             className="cursor-pointer"
             onClick={() => setActiveLink("home")}
           >
@@ -52,7 +66,7 @@ const Navbar = () => {
                   to={link.id}
                   smooth
                   duration={500}
-                  offset={-80}
+                  offset={offset}
                   spy
                   onSetActive={() => setActiveLink(link.id)}
                   className={`cursor-pointer transition-colors ${
@@ -79,7 +93,7 @@ const Navbar = () => {
       </motion.nav>
 
       {/* ================= MOBILE BOTTOM NAVBAR ================= */}
-      <div className="fixed bottom-0 left-0 w-full z-50 bg-[#0d0d0d] border-t border-[#1a1a1a] md:hidden">
+      <div className="fixed bottom-0 left-0 w-full z-50 bg-[#0d0d0d] border-t border-[#1a1a1a] md:hidden pb-[env(safe-area-inset-bottom)]">
         <div className="flex justify-around items-center py-2">
           {navLinks.map((link) => {
             const Icon = link.icon;
@@ -89,7 +103,7 @@ const Navbar = () => {
                 to={link.id}
                 smooth
                 duration={500}
-                offset={-80}
+                offset={offset}
                 spy
                 onSetActive={() => setActiveLink(link.id)}
                 className="flex flex-col items-center gap-1 cursor-pointer"
