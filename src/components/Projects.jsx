@@ -44,8 +44,36 @@ const Projects = () => {
       liveLink: "https://gadget-heaven-eight.vercel.app/",
       githubLink: "https://github.com/Shahriarshihab5/Gadget-Heaven",
     },
+
+ 
     {
       id: 3,
+      title: "Shopify Inspired Multi‑Vendor Platform",
+      description:
+        "A full‑stack, Shopify‑inspired multi‑vendor e‑commerce platform where merchants can create and manage stores, products, and orders while customers browse and purchase items. Features role‑based access (admin, merchant, customer), protected dashboards, Firebase authentication, and MongoDB‑backed APIs with a modern, responsive UI.",
+      image: "/peddy.png",
+      tools: [
+        "Next.js (App Router)",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "Zustand",
+        "Node.js",
+        "Express.js",
+        "MongoDB",
+        "Mongoose",
+        "Firebase Authentication"
+      ],
+    
+      liveLink: "https://shopifyinspiredwebapp.netlify.app/",
+      githubLink:
+        "https://github.com/Shahriarshihab5/Shopify-inspired-webApp",
+    },
+
+
+
+    {
+      id: 4,
       title: "PetAdoption (Peddy)",
       description:
         "A responsive web app built with HTML, Tailwind CSS, and JavaScript (ES6) that lets users browse, filter, and adopt pets with interactive modals, price sorting, and a simulated adoption process. Features dynamic pet listing and seamless user experience.",
@@ -65,7 +93,7 @@ const Projects = () => {
         "https://github.com/Shahriarshihab5/CSE416-Web-Engineering-Lab-Project",
     },
     {
-      id: 4,
+      id: 5,
       title: "BookVibe",
       description:
         "Responsive book listing app with read-list management, sorting, and toast notifications using React, Tailwind CSS, and React Router. Allows users to browse books, manage their reading list, and track their favorite books with local storage integration.",
