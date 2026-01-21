@@ -48,10 +48,10 @@ const Projects = () => {
  
     {
       id: 3,
-      title: "Shopify Inspired Multi‑Vendor Platform",
+      title: "Shopify Inspired Platform",
       description:
         "A full‑stack, Shopify‑inspired multi‑vendor e‑commerce platform where merchants can create and manage stores, products, and orders while customers browse and purchase items. Features role‑based access (admin, merchant, customer), protected dashboards, Firebase authentication, and MongoDB‑backed APIs with a modern, responsive UI.",
-      image: "/peddy.png",
+      image: "/public/Shopify.png",
       tools: [
         "Next.js (App Router)",
         "React",
