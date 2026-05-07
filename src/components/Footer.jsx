@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, Heart } from "lucide-react";
+import { Github, Linkedin, Mail, Heart, ExternalLink } from "lucide-react";
 import { Link } from "react-scroll";
 
 const Footer = () => {
@@ -9,6 +9,9 @@ const Footer = () => {
     { id: "home", text: "Home" },
     { id: "about", text: "About" },
     { id: "projects", text: "Projects" },
+    { id: "research", text: "Research" },
+    { id: "activities", text: "Activities" },
+    { id: "certificates", text: "Certificates" },
     { id: "contact", text: "Contact" },
   ];
 
@@ -25,7 +28,7 @@ const Footer = () => {
     },
     {
       icon: <Mail size={20} />,
-      url: "mailto:shahriarshihab1123@gmail.com",
+      url: "mailto:syedshahriarahmed0@gmail.com", // Updated to professional email 
       label: "Email",
     },
   ];
@@ -34,7 +37,7 @@ const Footer = () => {
     <footer className="bg-[#0a0a0a] border-t border-[#1a1a1a] text-light">
       <div className="max-w-7xl mx-auto px-8 md:px-20 py-12">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-8">
           {/* Brand Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -42,16 +45,16 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h3 className="text-2xl font-bold text-primary mb-3">
+            <h3 className="text-2xl font-bold text-primary mb-4">
               Syed Shahriar Ahmed
             </h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Front-End Developer & CSE Student passionate about creating
-              beautiful, responsive web experiences.
+            <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
+              Data Analyst & BI Specialist leveraging engineering logic to 
+              transform complex data into actionable business intelligence.
             </p>
           </motion.div>
 
-          {/* Quick Links */}
+          {/* Quick Links - Expanded for new sections */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -60,9 +63,9 @@ const Footer = () => {
             className="md:pl-12"
           >
             <h4 className="text-lg font-semibold text-white mb-4">
-              Quick Links
+              Navigation
             </h4>
-            <ul className="space-y-2">
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
               {quickLinks.map((link) => (
                 <li key={link.id}>
                   <Link
@@ -87,12 +90,13 @@ const Footer = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <h4 className="text-lg font-semibold text-white mb-4">
-              Connect With Me
+              Let's Collaborate
             </h4>
-            <p className="text-gray-400 text-sm mb-4">
-              Let's work together on your next project!
+            <p className="text-gray-400 text-sm mb-6">
+              Open to discussing data-driven insights and fintech ecosystem 
+              opportunities.
             </p>
-            <div className="flex gap-3">
+            <div className="flex gap-4">
               {socialLinks.map((social, index) => (
                 <motion.a
                   key={index}
@@ -118,13 +122,17 @@ const Footer = () => {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="pt-8 border-t border-[#1a1a1a] flex flex-col md:flex-row justify-between items-center gap-4"
         >
-          <p className="text-gray-500 text-sm text-center md:text-left">
-            © {currentYear} Syed Shahriar Ahmed. All rights reserved.
+          <p className="text-gray-500 text-sm text-center md:text-left font-medium">
+            © {currentYear} Syed Shahriar Ahmed. Built for Business Intelligence.
           </p>
-          <p className="text-gray-500 text-sm flex items-center gap-1">
-            Made with <Heart size={16} className="text-primary fill-primary" />{" "}
-            using React & Tailwind CSS
-          </p>
+          <div className="flex items-center gap-6">
+            <p className="text-gray-500 text-[10px] uppercase tracking-widest flex items-center gap-1 font-bold">
+              Engineering <span className="text-primary">•</span> Data <span className="text-primary">•</span> Leadership
+            </p>
+            <p className="text-gray-500 text-sm flex items-center gap-1">
+              Made with <Heart size={14} className="text-primary fill-primary" /> using React
+            </p>
+          </div>
         </motion.div>
       </div>
     </footer>

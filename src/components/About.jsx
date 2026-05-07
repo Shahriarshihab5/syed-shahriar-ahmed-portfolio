@@ -24,20 +24,20 @@ const skills = [
   // --- Data Intelligence & Analytics (Expert Focus) ---
   { name: "Power BI (DAX)", level: "🌟 Expert", icon: <FaChartBar /> },
   { name: "Advanced Excel", level: "🌟 Expert", icon: <FaFileExcel /> },
-  { name: "SQL (Data Architecture)", level: "💪 Proficient", icon: <FaDatabase /> },
+  { name: "SQL ", level: "💪 Proficient", icon: <FaDatabase /> },
   { name: "Python (Pandas/NumPy)", level: "💪 Proficient", icon: <FaPython /> },
-  { name: "Data Storytelling", level: "💪 Proficient", icon: <FiBarChart2 /> },
+  
   
   // --- Engineering & CS Foundations ---
-  { name: "Software Engineering", level: "🌟 Expert", icon: <FaCogs /> },
-  { name: "System Design", level: "💪 Proficient", icon: <FaLayerGroup /> },
-  { name: "Networking", level: "💪 Proficient", icon: <FaNetworkWired /> },
-  { name: "DSA & OOP", level: "💪 Proficient", icon: <FaProjectDiagram /> },
+  { name: "Software Engineering", level: "💪 Proficient", icon: <FaCogs /> },
+  { name: "Networking", level: "👍 Good", icon: <FaNetworkWired /> },
   { name: "Deep Learning (CNN)", level: "💪 Proficient", icon: <FaMicroscope /> },
+  { name: "DSA & OOP", level: "👍 Good", icon: <FaProjectDiagram /> },
+  { name: "System Design", level: "👍 Good", icon: <FaLayerGroup /> },
 
   // --- Web Technologies ---
-  { name: "React.js", level: "🌟 Expert", icon: <SiReact /> },
-  { name: "Full-Stack Ops", level: "💪 Proficient", icon: <SiGithub /> },
+  { name: "React.js", level: "💪 Proficient", icon: <SiReact /> },
+ 
 ];
 
 const levelWidths = {
@@ -73,15 +73,15 @@ export default function About() {
         >
           <p className="mb-6 text-lg">
             I am <span className="text-primary font-semibold">Syed Shahriar Ahmed</span> 👋, a 
-            <span className="text-primary font-semibold"> Data Analyst & BI Specialist</span>  and a CSE Graduate from Daffodil International University (CGPA: <b>3.55</b>).
+            <span className="text-primary font-semibold"> Data Analyst & BI Specialist</span>  and a CSE Graduate from Daffodil International University (CGPA: <b>3.56</b>)
           </p>
           
           <p className="mb-6 text-lg">
-            As a <b>Published Researcher (IEEE)</b> , I specialize in complex data interpretation and <b>Deep Learning</b>. My expertise lies in architecting <b>Power BI</b> dashboards and <b>SQL</b> models that drive high-level business decisions.
+            As a <b>Published Researcher (IEEE)</b> , I specialize in complex data interpretation and <b>Deep Learning</b>. My expertise lies in architecting <b>Power BI</b> dashboards  and <b>SQL</b> models that drive high-level business decisions.
           </p>
 
           <p className="mb-6 text-lg">
-            Beyond analytics, I have a rigorous background in <b>Software Engineering, Networking, and System Design</b>. I leverage my <b>React.js</b> and full-stack capabilities to build data-driven tools that are as functional as they are insightful.
+            Beyond analytics, I have a rigorous background in <b>Software Engineering and Networking</b>. I leverage my <b>React.js</b> and full-stack capabilities to build data-driven tools that are as functional as they are insightful.
           </p>
 
           <p className="text-lg italic text-primary/80">

@@ -21,9 +21,10 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
     // Create mailto link with form data
-    const mailtoLink = `mailto:shahriarshihab1123@gmail.com?subject=${encodeURIComponent(
+    const mailtoLink = `mailto:syedshahriarahmed0@gmail.com?subject=${encodeURIComponent(
       formData.subject
     )}&body=${encodeURIComponent(
       `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
@@ -34,14 +35,15 @@ const Contact = () => {
     
     // Reset form
     setFormData({ name: "", email: "", subject: "", message: "" });
+    setIsSubmitting(false);
   };
 
   const contactInfo = [
     {
       icon: <Mail size={24} />,
       title: "Email",
-      value: "shahriarshihab1123@gmail.com",
-      link: "mailto:shahriarshihab1123@gmail.com",
+      value: "syedshahriarahmed0@gmail.com",
+      link: "mailto:syedshahriarahmed0@gmail.com",
     },
     {
       icon: <Phone size={24} />,
@@ -51,9 +53,15 @@ const Contact = () => {
     },
     {
       icon: <MapPin size={24} />,
-      title: "Location",
-      value: "Dhaka, Bangladesh",
-      link: "#",
+      title: "Present Address",
+      value: "Uttara, Dhaka, Bangladesh",
+      link: "https://goo.gl/maps/xyz", // Replace with a real maps link if desired
+    },
+    {
+      icon: <MapPin size={24} />,
+      title: "Hometown",
+      value: "Rajshahi, Bangladesh",
+      link: "https://goo.gl/maps/abc", // Replace with a real maps link if desired
     },
   ];
 
@@ -116,6 +124,8 @@ const Contact = () => {
               <motion.a
                 key={index}
                 href={info.link}
+                target={info.link.startsWith('http') ? "_blank" : "_self"}
+                rel={info.link.startsWith('http') ? "noopener noreferrer" : ""}
                 whileHover={{ scale: 1.05, x: 10 }}
                 className="flex items-center gap-4 p-4 bg-[#1a1a1a] rounded-lg border border-[#2a2a2a] hover:border-primary transition-all group cursor-pointer"
               >
@@ -239,7 +249,7 @@ const Contact = () => {
               className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-primary text-dark font-semibold rounded-lg hover:shadow-[0_0_20px_#ff4c29] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Send size={20} />
-              Send Message
+              {isSubmitting ? "Sending..." : "Send Message"}
             </motion.button>
           </form>
         </motion.div>
