@@ -1,208 +1,247 @@
-import { motion } from "framer-motion";
-import { ExternalLink, Github } from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ExternalLink, Github, BarChart3, Code2, Database, Table, PieChart, Sparkles } from "lucide-react";
 import RevealOnScroll from "./RevealOnScroll";
 
-const Projects = () => {
-  const projects = [
+// Sub-component for auto-changing images with fade effect
+const ProjectImage = ({ images, title }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
 
+  useEffect(() => {
+    if (!images || images.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 3000); // Transitions every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [images]);
+
+  return (
+    <div className="relative h-48 bg-black overflow-hidden">
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={images[currentIndex]}
+          src={images[currentIndex]}
+          alt={`${title} view ${currentIndex + 1}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.7 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8 }}
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+        />
+      </AnimatePresence>
+      
+      {/* Indicator dots for multiple images */}
+      {images.length > 1 && (
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
+          {images.map((_, idx) => (
+            <div 
+              key={idx} 
+              className={`h-1 rounded-full transition-all duration-300 ${
+                idx === currentIndex ? "bg-primary w-4" : "bg-white/20 w-1.5"
+              }`}
+            />
+          ))}
+        </div>
+      )}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] to-transparent" />
+    </div>
+  );
+};
+
+const Projects = () => {
+  const [activeTab, setActiveTab] = useState("data");
+  const [activeSubTab, setActiveSubTab] = useState("powerbi");
+
+  const projects = [
+    // --- POWER BI PROJECTS ---
     {
       id: 1,
-      title: "X-ray Osteoarthritis Detection System",
-      description:
-        "Full-stack AI-powered web application that allows users to upload X-ray images and receive osteoarthritis predictions via a REST API. Includes Grad-CAM visualizations for model interpretability and real-world deployment.",
-      image: "/X-ray.png", 
-      tools: [
-        "Python",
-        "Deep Learning",
-        "Ensemble Models",
-        "Grad-CAM",
-        "Flask",
-        "REST API",
-        "React.js",
-        "Hugging Face",
-        "HTML",
-        "CSS",
-      ],
-      liveLink: "https://osteodetector-frontend.vercel.app/",
-      
-      githubLink: "https://github.com/Shahriarshihab5/osteodetector-backend", 
+      category: "data",
+      subCategory: "powerbi",
+      title: "Real-Time Weather Intelligence Dashboard",
+      description: "Integrated WeatherAPI and transformed JSON data using Power Query to build a data model for AQI and trend analysis. Features multi-city comparisons in real-time.",
+      images: ["/Weather Report.png"],
+      tools: ["Power BI", "DAX", "API Integration", "Power Query"],
+      liveLink: "https://github.com/Shahriarshihab5/Weather_Report_Dashboard",
+      githubLink: "https://github.com/Shahriarshihab5/Weather_Report_Dashboard",
     },
     {
       id: 2,
-      title: "GadgetHeaven",
-      description:
-        "Responsive React gadget store with Tailwind CSS, featuring product browsing, cart, and wishlist. A full-featured e-commerce platform with smooth navigation, dynamic cart management, and real-time updates using Context API and LocalStorage.",
-      image: "/gadgetheaven.png",
-      tools: [
-        "React",
-        "Tailwind CSS",
-        "React Router",
-        "React Toastify",
-        "Vite",
-        "Firebase Authentication",
-      ],
-      liveLink: "https://gadget-heaven-eight.vercel.app/",
-      githubLink: "https://github.com/Shahriarshihab5/Gadget-Heaven",
+      category: "data",
+      subCategory: "powerbi",
+      title: "HR Analytics & Employee Attrition Dashboard",
+      description: "Analyzed 941 records to track a 13.8% attrition rate. Developed interactive KPIs using DAX to visualize salary and job role trends.",
+      images: ["/HR_Analytics.jpeg"],
+      tools: ["Power BI", "DAX", "Data Modeling", "KPI Tracking"],
+      liveLink: "https://github.com/Shahriarshihab5/HR-Analytics-Dashboard",
+      githubLink: "https://github.com/Shahriarshihab5/HR-Analytics-Dashboard",
     },
 
- 
+    // --- EXCEL PROJECTS (Updated for Multi-Image) ---
     {
       id: 3,
-      title: "Shopify Inspired Platform",
-      description:
-        "A full‑stack, Shopify‑inspired multi‑vendor e‑commerce platform where merchants can create and manage stores, products, and orders while customers browse and purchase items. Features role‑based access (admin, merchant, customer), protected dashboards, Firebase authentication, and MongoDB‑backed APIs with a modern, responsive UI.",
-      image: "Shopify.png",
-      tools: [
-        "Next.js (App Router)",
-        "React",
-        "TypeScript",
-        "Tailwind CSS",
-        "Zustand",
-        "Node.js",
-        "Express.js",
-        "MongoDB",
-        "Mongoose",
-        "Firebase Authentication"
+      category: "data",
+      subCategory: "excel",
+      title: "Sales & Revenue Analysis Dashboard",
+      description: "Modeled revenue trends using Power Pivot and DAX across multi-sheet workbooks. Applied Goal Seek and Scenario Manager for revenue target simulation.",
+ 
+      images: [
+        "/Sa1.png", 
+        "/sa2.png", 
+        "/sa3.png", 
+        "/Sa4.png"
       ],
-    
-      liveLink: "https://shopifyinspiredwebapp.netlify.app/",
-      githubLink:
-        "https://github.com/Shahriarshihab5/Shopify-inspired-webApp",
+      tools: ["MS Excel", "Power Pivot", "XLOOKUP", "What-If Analysis"],
+      liveLink: "https://github.com/Shahriarshihab5/Sales-Revenue-Analysis-Dashboard",
+      githubLink: "https://github.com/Shahriarshihab5/Sales-Revenue-Analysis-Dashboard",
     },
 
-
-
+    // --- SOFTWARE ENGINEERING PROJECTS ---
     {
       id: 4,
-      title: "PetAdoption (Peddy)",
-      description:
-        "A responsive web app built with HTML, Tailwind CSS, and JavaScript (ES6) that lets users browse, filter, and adopt pets with interactive modals, price sorting, and a simulated adoption process. Features dynamic pet listing and seamless user experience.",
-      image: "/peddy.png",
-      tools: [
-        "HTML5",
-        "CSS3",
-        "Tailwind CSS",
-        "JavaScript (ES6+)",
-        "Node.js",
-        "MongoDB",
-        "Mongoose",
-        "Firebase Authentication",
-      ],
-      liveLink: "https://peddy-pet-adoptionnsite.surge.sh/",
-      githubLink:
-        "https://github.com/Shahriarshihab5/CSE416-Web-Engineering-Lab-Project",
+      category: "web",
+      title: "AI-Powered Osteoarthritis Detection",
+      description: "Full-stack AI system using CNNs for medical image interpretation. Lead author of the corresponding IEEE-accepted research paper.",
+      images: ["/X-ray.png"],
+      tools: ["CNN", "React.js", "Flask", "Deep Learning"],
+      liveLink: "https://osteodetector-frontend.vercel.app/",
+      githubLink: "https://github.com/Shahriarshihab5/osteodetector-backend",
     },
     {
       id: 5,
-      title: "BookVibe",
-      description:
-        "Responsive book listing app with read-list management, sorting, and toast notifications using React, Tailwind CSS, and React Router. Allows users to browse books, manage their reading list, and track their favorite books with local storage integration.",
-      image: "/bookvibe.png",
-      tools: [
-        "React.js",
-        "React Router",
-        "Tailwind CSS",
-        "Firebase",
-        "React Toastify",
-        "Local Storage",
-      ],
-      liveLink: "https://book-vibee8.netlify.app/",
-      githubLink: "https://github.com/Shahriarshihab5/Bookvibe",
+      category: "web",
+      title: "Shopify Inspired Platform",
+      description: "Multi-vendor e-commerce platform with role-based access control and MongoDB-backed APIs.",
+      images: ["/Shopify.png"],
+      tools: ["Next.js", "TypeScript", "Node.js", "MongoDB"],
+      liveLink: "https://shopifyinspiredwebapp.netlify.app/",
+      githubLink: "https://github.com/Shahriarshihab5/Shopify-inspired-webApp",
     },
   ];
 
+  const filteredProjects = projects.filter(p => 
+    p.category === activeTab && (activeTab === "web" || p.subCategory === activeSubTab)
+  );
+
   return (
-    <section
-      id="projects"
-      className="min-h-screen px-8 md:px-20 py-20 bg-[#0d0d0d] text-light"
-    >
-      {/* Section Header */}
-      <RevealOnScroll direction="up" delay={0}>
-        <div className="text-center mb-16">
+    <section id="projects" className="min-h-screen px-8 md:px-20 py-20 bg-[#0d0d0d] text-light">
+      <RevealOnScroll direction="up">
+        <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            My <span className="text-primary">Projects</span>
+            Project <span className="text-primary">Showcase</span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-            Here are some of my recent projects that showcase my skills in web
-            development, responsive design, and problem-solving.
-          </p>
         </div>
       </RevealOnScroll>
 
-      {/* Projects Grid */}
-      <div className="space-y-16">
-        {projects.map((project, index) => (
-          <RevealOnScroll key={project.id} direction="up" delay={index * 0.15}>
-            <motion.div
-              className="bg-[#1a1a1a] rounded-xl overflow-hidden shadow-lg hover:shadow-[0_0_30px_rgba(255,76,41,0.3)] transition-all duration-300 border border-[#2a2a2a]"
-              whileHover={{ y: -5 }}
-            >
-              <div
-                className={`flex flex-col ${
-                  index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+      {/* Main Tab Switcher */}
+      <div className="flex justify-center mb-8">
+        <div className="bg-[#1a1a1a] p-1 rounded-xl border border-[#2a2a2a] flex">
+          <button
+            onClick={() => setActiveTab("data")}
+            className={`flex items-center gap-2 px-6 py-2 rounded-lg transition-all ${
+              activeTab === "data" ? "bg-primary text-white" : "text-gray-400"
+            }`}
+          >
+            <BarChart3 size={18} /> Data Intelligence
+          </button>
+          <button
+            onClick={() => setActiveTab("web")}
+            className={`flex items-center gap-2 px-6 py-2 rounded-lg transition-all ${
+              activeTab === "web" ? "bg-primary text-white" : "text-gray-400"
+            }`}
+          >
+            <Code2 size={18} /> Software Engineering
+          </button>
+        </div>
+      </div>
+
+      {/* Nested Sub-Tabs for Data Intelligence */}
+      <AnimatePresence>
+        {activeTab === "data" && (
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="flex justify-center gap-4 mb-12"
+          >
+            {[
+              { id: "powerbi", label: "Power BI", icon: <PieChart size={14}/> },
+              { id: "excel", label: "Excel", icon: <Table size={14}/> },
+              { id: "sql", label: "SQL", icon: <Database size={14}/> }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveSubTab(tab.id)}
+                className={`flex items-center gap-2 px-4 py-1.5 rounded-full border text-xs font-bold uppercase tracking-wider transition-all ${
+                  activeSubTab === tab.id 
+                  ? "border-primary text-primary bg-primary/10" 
+                  : "border-gray-700 text-gray-500 hover:border-gray-500"
                 }`}
               >
-                {/* Project Image */}
-                <div className="md:w-1/2 relative group overflow-hidden bg-[#0d0d0d]">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-64 md:h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] to-transparent opacity-60"></div>
-                </div>
+                {tab.icon} {tab.label}
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-                {/* Project Details */}
-                <div className="md:w-1/2 p-8 flex flex-col justify-between">
-                  <div>
-                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                      {project.title}
-                    </h3>
-                    <p className="text-gray-400 mb-6 leading-relaxed">
-                      {project.description}
-                    </p>
-
-                    {/* Tools/Tech Stack */}
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {project.tools.map((tool, idx) => (
-                        <span
-                          key={idx}
-                          className="px-3 py-1 text-sm bg-primary/20 text-primary rounded-full border border-primary/30"
-                        >
-                          {tool}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Buttons */}
-                  <div className="flex gap-4">
-                    <motion.a
-                      href={project.liveLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.05 }}
-                      className="flex items-center gap-2 px-6 py-3 bg-primary text-dark font-semibold rounded-lg hover:shadow-[0_0_20px_#ff4c29] transition-all"
-                    >
-                      <ExternalLink size={18} />
-                      Live Demo
-                    </motion.a>
-                    <motion.a
-                      href={project.githubLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.05 }}
-                      className="flex items-center gap-2 px-6 py-3 border-2 border-primary text-primary font-semibold rounded-lg hover:bg-primary hover:text-dark transition-all"
-                    >
-                      <Github size={18} />
-                      GitHub
-                    </motion.a>
-                  </div>
-                </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <AnimatePresence mode="wait">
+          {activeSubTab === "sql" && activeTab === "data" ? (
+            <motion.div
+              key="sql-coming-soon"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="col-span-full py-20 border-2 border-dashed border-[#2a2a2a] rounded-2xl flex flex-col items-center justify-center text-center"
+            >
+              <div className="p-4 bg-primary/10 rounded-full mb-4">
+                <Sparkles className="text-primary animate-pulse" size={40} />
               </div>
+              <h3 className="text-2xl font-bold text-white mb-2">Something Big is Coming</h3>
+              <p className="text-gray-500 max-w-sm">
+                I am currently architecting complex SQL optimization and database design projects. Stay tuned for data-driven excellence.
+              </p>
             </motion.div>
-          </RevealOnScroll>
-        ))}
+          ) : (
+            filteredProjects.map((project) => (
+              <motion.div
+                key={project.id}
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                className="bg-[#1a1a1a] rounded-xl overflow-hidden border border-[#2a2a2a] group hover:border-primary/50 transition-all flex flex-col h-full"
+              >
+                {/* Auto-cycling Image Component */}
+                <ProjectImage images={project.images} title={project.title} />
+                
+                <div className="p-6 flex flex-col flex-grow">
+                  <h3 className="text-lg font-bold text-white mb-2">{project.title}</h3>
+                  <p className="text-gray-400 text-xs mb-4 leading-relaxed line-clamp-3">{project.description}</p>
+                  
+                  <div className="flex flex-wrap gap-1.5 mb-6 mt-auto">
+                    {project.tools.map((tool, idx) => (
+                      <span key={idx} className="px-2 py-0.5 text-[9px] uppercase font-black bg-primary/10 text-primary border border-primary/20 rounded">
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
+                  
+                  <div className="flex gap-4 border-t border-white/5 pt-4">
+                    <a href={project.liveLink} target="_blank" rel="noreferrer" className="text-primary hover:text-white transition-colors">
+                      <ExternalLink size={18} />
+                    </a>
+                    <a href={project.githubLink} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white transition-colors">
+                      <Github size={18} />
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+            ))
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

@@ -4,46 +4,46 @@ import {
   SiCss3,
   SiJavascript,
   SiReact,
-  SiFirebase,
-  SiMysql,
   SiGithub,
+  SiMysql,
 } from "react-icons/si";
-import { FiCpu } from "react-icons/fi";
-import {
-  FaProjectDiagram,
-  FaCogs,
-  FaDesktop,
+import { 
+  FaChartBar, 
+  FaFileExcel, 
+  FaDatabase, 
+  FaPython, 
+  FaMicroscope, 
+  FaProjectDiagram, 
   FaNetworkWired,
-  FaLayerGroup,
-  FaShareAlt, // placeholder for React Router
-  FaCode, // placeholder for VS Code
+  FaCogs,
+  FaLayerGroup
 } from "react-icons/fa";
+import { FiBarChart2 } from "react-icons/fi";
 
 const skills = [
-  { name: "HTML", level: "🌟 Expert", icon: <SiHtml5 /> },
-  { name: "CSS", level: "🌟 Expert", icon: <SiCss3 /> },
-  { name: "JavaScript", level: "💪 Proficient", icon: <SiJavascript /> },
-  { name: "React", level: "🌟 Expert", icon: <SiReact /> },
-  { name: "React Router", level: "💪 Proficient", icon: <FaShareAlt /> },
-  { name: "Firebase", level: "💪 Proficient", icon: <SiFirebase /> },
-  { name: "MySQL", level: "👍 Good", icon: <SiMysql /> },
-  { name: "APIs", level: "👍 Good", icon: <FiCpu /> },
-  { name: "Git & GitHub", level: "💪 Proficient", icon: <SiGithub /> },
-  { name: "VS Code", level: "💪 Proficient", icon: <FaCode /> },
-  { name: "Data Structures & Algorithms", level: "👍 Good", icon: <FaProjectDiagram /> },
-  { name: "OOP", level: "👍 Good", icon: <FaCogs /> },
-  { name: "OS", level: "🔰 Familiar", icon: <FaDesktop /> },
-  { name: "ES6", level: "💪 Proficient", icon: <SiJavascript /> },
-  { name: "Networking Basics", level: "🔰 Familiar", icon: <FaNetworkWired /> },
-  { name: "System Design / Architecture", level: "💪 Proficient", icon: <FaLayerGroup /> },
+  // --- Data Intelligence & Analytics (Expert Focus) ---
+  { name: "Power BI (DAX)", level: "🌟 Expert", icon: <FaChartBar /> },
+  { name: "Advanced Excel", level: "🌟 Expert", icon: <FaFileExcel /> },
+  { name: "SQL (Data Architecture)", level: "💪 Proficient", icon: <FaDatabase /> },
+  { name: "Python (Pandas/NumPy)", level: "💪 Proficient", icon: <FaPython /> },
+  { name: "Data Storytelling", level: "💪 Proficient", icon: <FiBarChart2 /> },
+  
+  // --- Engineering & CS Foundations ---
+  { name: "Software Engineering", level: "🌟 Expert", icon: <FaCogs /> },
+  { name: "System Design", level: "💪 Proficient", icon: <FaLayerGroup /> },
+  { name: "Networking", level: "💪 Proficient", icon: <FaNetworkWired /> },
+  { name: "DSA & OOP", level: "💪 Proficient", icon: <FaProjectDiagram /> },
+  { name: "Deep Learning (CNN)", level: "💪 Proficient", icon: <FaMicroscope /> },
+
+  // --- Web Technologies ---
+  { name: "React.js", level: "🌟 Expert", icon: <SiReact /> },
+  { name: "Full-Stack Ops", level: "💪 Proficient", icon: <SiGithub /> },
 ];
 
-// Map skill levels to progress bar widths
 const levelWidths = {
   "🌟 Expert": "100%",
   "💪 Proficient": "85%",
   "👍 Good": "70%",
-  "🔰 Familiar": "50%",
 };
 
 export default function About() {
@@ -52,60 +52,69 @@ export default function About() {
       id="about"
       className="min-h-screen bg-[#0d0d0d] text-light px-8 md:px-20 py-20 relative overflow-hidden"
     >
-      {/* Glowing background */}
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[#ff4c29]/10 via-transparent to-transparent blur-3xl"></div>
 
-      {/* Heading */}
       <motion.h2
         className="text-4xl md:text-5xl font-bold text-center mb-12 text-primary"
         initial={{ opacity: 0, y: -30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        About Me
+        Expertise & Foundation
       </motion.h2>
 
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-10 z-10 relative">
-        {/* Left Text Section */}
+      <div className="flex flex-col md:flex-row items-start justify-between gap-12 z-10 relative">
+        {/* Bio Section */}
         <motion.div
           className="md:w-1/2 text-gray-300 leading-relaxed"
           initial={{ opacity: 0, x: -60 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <p className="mb-4 text-lg">
-            Hi, I’m <span className="text-primary font-semibold">Syed Shahriar Ahmed</span> 👋, a passionate{" "}
-            <span className="text-primary font-semibold">CSE student</span> at Daffodil International University with a CGPA of <b>3.56</b>.
+          <p className="mb-6 text-lg">
+            I am <span className="text-primary font-semibold">Syed Shahriar Ahmed</span> 👋, a 
+            <span className="text-primary font-semibold"> Data Analyst & BI Specialist</span>  and a CSE Graduate from Daffodil International University (CGPA: <b>3.55</b>).
           </p>
-          <p className="mb-4 text-lg">
-            Skilled in <b>HTML, CSS, JavaScript, React, Firebase, MySQL</b>, and have solid foundations in{" "}
-            <b>OOP, ES6, Operating Systems, Networking, System Design,</b> and <b>DSA</b>.
+          
+          <p className="mb-6 text-lg">
+            As a <b>Published Researcher (IEEE)</b> , I specialize in complex data interpretation and <b>Deep Learning</b>. My expertise lies in architecting <b>Power BI</b> dashboards and <b>SQL</b> models that drive high-level business decisions.
           </p>
-          <p className="text-lg">
-            I love building interactive and modern front-end experiences, exploring backend technologies, and improving my design and problem-solving skills daily.
+
+          <p className="mb-6 text-lg">
+            Beyond analytics, I have a rigorous background in <b>Software Engineering, Networking, and System Design</b>. I leverage my <b>React.js</b> and full-stack capabilities to build data-driven tools that are as functional as they are insightful.
+          </p>
+
+          <p className="text-lg italic text-primary/80">
+            "Engineering logic meets data intelligence."
           </p>
         </motion.div>
 
-        {/* Right Skills Section */}
+        {/* Skill Grid */}
         <motion.div
-          className="md:w-1/2 grid grid-cols-2 gap-6"
+          className="md:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-6"
           initial={{ opacity: 0, x: 60 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
           {skills.map((skill, index) => (
-            <div key={index} className="flex flex-col">
-              <div className="flex items-center gap-3 mb-1 text-sm">
-                <span className="text-primary text-lg">{skill.icon}</span>
-                <span className="font-medium">{skill.name}</span>
-                <span className="ml-auto">{skill.level}</span>
+            <div key={index} className="group">
+              <div className="flex items-center gap-3 mb-2 text-sm">
+                <span className="text-primary text-xl group-hover:scale-110 transition-transform duration-300">
+                  {skill.icon}
+                </span>
+                <span className="font-semibold text-white">
+                  {skill.name}
+                </span>
+                <span className="ml-auto text-[9px] font-bold text-primary/60 uppercase">
+                  {skill.level.split(" ")[1]}
+                </span>
               </div>
-              <div className="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
+              <div className="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
                 <motion.div
-                  className="h-2 rounded-full bg-gradient-to-r from-primary to-orange-600"
+                  className="h-full rounded-full bg-gradient-to-r from-primary to-orange-600"
                   initial={{ width: 0 }}
                   whileInView={{ width: levelWidths[skill.level] }}
-                  transition={{ duration: 1.2, delay: index * 0.05 }}
+                  transition={{ duration: 1.2, delay: index * 0.1 }}
                 />
               </div>
             </div>

@@ -7,7 +7,7 @@ const Hero = () => {
       id="home"
       className="min-h-screen flex flex-col md:flex-row items-center justify-between px-8 md:px-20 pt-28 bg-[#0d0d0d] text-light relative overflow-hidden"
     >
-      {/* Animated background with multiple layers */}
+      {/* Animated background - Preserving existing theme */}
       <motion.div 
         className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/5 to-transparent blur-3xl"
         animate={{
@@ -54,7 +54,6 @@ const Hero = () => {
           ease: [0.6, -0.05, 0.01, 0.99],
         }}
       >
-        {/* Greeting with stagger animation */}
         <motion.p 
           className="text-lg text-primary font-semibold mb-2"
           initial={{ opacity: 0, y: 20 }}
@@ -64,7 +63,6 @@ const Hero = () => {
           Hello 👋
         </motion.p>
 
-        {/* Name with letter animation */}
         <motion.h1 
           className="text-4xl md:text-5xl font-bold text-white mb-3"
           initial={{ opacity: 0, y: 20 }}
@@ -84,7 +82,7 @@ const Hero = () => {
           </span>
         </motion.h1>
 
-        {/* Typing Animation - White Color Only */}
+        {/* Updated Typing Animation for Data Analytics */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -94,13 +92,13 @@ const Hero = () => {
           <h2 className="text-2xl md:text-3xl font-semibold text-white">
             <TypeAnimation
               sequence={[
-                "Front-End Developer",
+                "Data Analyst",
                 2000,
-                "React Enthusiast",
+                "Business Intelligence Analyst",
                 2000,
-                "CSE Student",
+                "SQL & Power BI Expert",
                 2000,
-                "Problem Solver",
+                "Researcher",
                 2000,
               ]}
               wrapper="span"
@@ -110,20 +108,19 @@ const Hero = () => {
           </h2>
         </motion.div>
 
-        {/* Description */}
+        {/* Updated Description focusing on Data insights */}
         <motion.p 
           className="text-gray-400 mb-8 max-w-md leading-relaxed"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.8 }}
         >
-          Passionate about crafting clean, responsive, and dynamic web
-          experiences. Skilled in React, Tailwind CSS, APIs & Firebase
-          Authentication — currently learning backend development to become a
-          full-stack developer.
+          Turning raw data into actionable business intelligence. 
+          Specializing in dashboard development, DAX modeling, and 
+          data storytelling to drive informed decision-making.
         </motion.p>
 
-        {/* Buttons with stagger */}
+        {/* Buttons */}
         <motion.div 
           className="flex space-x-4"
           initial={{ opacity: 0, y: 20 }}
@@ -139,13 +136,13 @@ const Hero = () => {
             whileTap={{ scale: 0.95 }}
             className="px-6 py-3 rounded-lg bg-primary text-white font-semibold transition-all duration-300 relative overflow-hidden group"
           >
-            <span className="relative z-10">Got a project?</span>
+            <span className="relative z-10">Hire Me</span>
             <span className="absolute inset-0 bg-gradient-to-r from-orange-600 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.a>
 
           <motion.a
-            href="/Syed-Shahriar-Ahmed-Resume_.pdf"
-            download="Syed-Shahriar-Ahmed-Resume.pdf"
+            href="/Syed_Shahriar_Ahmed_Resume.pdf"
+            download="Syed_Shahriar_Ahmed_Resume.pdf"
             whileHover={{ 
               scale: 1.05,
               backgroundColor: "#ff4c29",
@@ -154,7 +151,7 @@ const Hero = () => {
             whileTap={{ scale: 0.95 }}
             className="px-6 py-3 rounded-lg border-2 border-primary text-primary font-semibold transition-all duration-300"
           >
-            My Resume
+            Download CV
           </motion.a>
         </motion.div>
       </motion.div>
@@ -169,7 +166,6 @@ const Hero = () => {
           ease: [0.6, -0.05, 0.01, 0.99],
         }}
       >
-        {/* Rotating glow ring 1 */}
         <motion.div
           className="absolute w-[400px] h-[400px] rounded-full bg-gradient-to-br from-primary/40 to-transparent blur-2xl"
           animate={{
@@ -182,7 +178,6 @@ const Hero = () => {
           }}
         />
 
-        {/* Rotating glow ring 2 - opposite direction */}
         <motion.div
           className="absolute w-[350px] h-[350px] rounded-full bg-gradient-to-tl from-orange-500/30 to-transparent blur-2xl"
           animate={{
@@ -195,7 +190,7 @@ const Hero = () => {
           }}
         />
 
-        {/* Profile Image with Clean Shadow */}
+        {/* Profile Image */}
         <motion.div
           className="relative"
           whileHover={{ scale: 1.05 }}
@@ -203,7 +198,7 @@ const Hero = () => {
         >
           <motion.img
             src="/cv.png"
-            alt="Syed Shahriar Ahmed"
+            alt="Syed Shahriar Ahmed - Data Analyst"
             className="w-64 md:w-80 rounded-full shadow-[0_0_60px_rgba(255,76,41,0.6)] relative z-10"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}

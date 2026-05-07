@@ -4,7 +4,9 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Projects from "./components/Projects";
-import Research from "./components/Research";  // Add this
+import Research from "./components/Research";
+import Activities from "./components/Activities"; // Leadership & Volunteer
+import Certificates from "./components/Certificates"; // Professional Credentials
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import ScrollProgressBar from "./components/ScrollProgressBar";
@@ -28,14 +30,20 @@ function App() {
         {loading ? (
           <Loader key="loader" />
         ) : (
-          <div key="content" className="min-h-screen bg-[#0d0d0d] text-light">
+          <div key="content" className="min-h-screen bg-[#0d0d0d] text-light selection:bg-primary selection:text-white">
             <ScrollProgressBar />
             <Navbar />
-            <Hero />
-            <About />
-            <Projects />
-            <Research />  {/* Add this */}
-            <Contact />
+            
+            <main>
+              <Hero />
+              <About />
+              <Projects />
+              <Research />
+              <Activities />
+              <Certificates />
+              <Contact />
+            </main>
+
             <Footer />
             <Chatbot />
           </div>

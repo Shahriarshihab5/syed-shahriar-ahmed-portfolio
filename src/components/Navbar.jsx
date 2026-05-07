@@ -7,13 +7,14 @@ import {
   Folder,
   FlaskConical,
   Mail,
+  Trophy,
+  Camera,
 } from "lucide-react";
 
 const Navbar = () => {
   const [activeLink, setActiveLink] = useState("home");
   const [offset, setOffset] = useState(-80);
 
-  // Fix offset & layout on first load
   useEffect(() => {
     const updateOffset = () => {
       setOffset(window.innerWidth < 768 ? -60 : -80);
@@ -22,7 +23,6 @@ const Navbar = () => {
     updateOffset();
     window.scrollTo(0, 0);
     window.addEventListener("resize", updateOffset);
-
     return () => window.removeEventListener("resize", updateOffset);
   }, []);
 
@@ -31,6 +31,8 @@ const Navbar = () => {
     { id: "about", text: "About", icon: User },
     { id: "projects", text: "Projects", icon: Folder },
     { id: "research", text: "Research", icon: FlaskConical },
+    { id: "activities", text: "Activities", icon: Camera },
+    { id: "certificates", text: "Certificates", icon: Trophy },
     { id: "contact", text: "Contact", icon: Mail },
   ];
 
@@ -44,7 +46,6 @@ const Navbar = () => {
         transition={{ duration: 0.5 }}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-          {/* Logo */}
           <Link
             to="home"
             smooth
@@ -58,8 +59,7 @@ const Navbar = () => {
             </h1>
           </Link>
 
-          {/* Desktop Links */}
-          <ul className="flex space-x-6 text-lg">
+          <ul className="flex space-x-6 text-sm lg:text-base">
             {navLinks.map((link) => (
               <li key={link.id}>
                 <Link
@@ -69,10 +69,8 @@ const Navbar = () => {
                   offset={offset}
                   spy
                   onSetActive={() => setActiveLink(link.id)}
-                  className={`cursor-pointer transition-colors ${
-                    activeLink === link.id
-                      ? "text-primary"
-                      : "text-light"
+                  className={`cursor-pointer transition-colors font-medium ${
+                    activeLink === link.id ? "text-primary" : "text-light"
                   } hover:text-primary`}
                 >
                   {link.text}
@@ -81,11 +79,10 @@ const Navbar = () => {
             ))}
           </ul>
 
-          {/* Resume Button */}
           <a
-            href="Syed_Shahriar_Ahmed_Resume.pdf"
+            href="/Syed_Shahriar_Ahmed_Resume.pdf"
             download="Syed_Shahriar_Ahmed_Resume.pdf"
-            className="px-6 py-2.5 bg-primary text-white font-semibold rounded-lg shadow-lg hover:shadow-[0_0_20px_rgba(255,76,41,0.6)] hover:scale-105 transition-all duration-300 border-2 border-white"
+            className="px-5 py-2 bg-primary text-white text-sm font-bold rounded-lg shadow-lg hover:shadow-[0_0_20px_rgba(255,76,41,0.6)] hover:scale-105 transition-all duration-300 border border-white/20"
           >
             Resume
           </a>
@@ -94,7 +91,7 @@ const Navbar = () => {
 
       {/* ================= MOBILE BOTTOM NAVBAR ================= */}
       <div className="fixed bottom-0 left-0 w-full z-50 bg-[#0d0d0d] border-t border-[#1a1a1a] md:hidden pb-[env(safe-area-inset-bottom)]">
-        <div className="flex justify-around items-center py-2">
+        <div className="flex justify-around items-center py-3">
           {navLinks.map((link) => {
             const Icon = link.icon;
             return (
@@ -109,18 +106,14 @@ const Navbar = () => {
                 className="flex flex-col items-center gap-1 cursor-pointer"
               >
                 <Icon
-                  size={22}
+                  size={20}
                   className={`transition-colors ${
-                    activeLink === link.id
-                      ? "text-primary"
-                      : "text-gray-400"
+                    activeLink === link.id ? "text-primary" : "text-gray-400"
                   }`}
                 />
                 <span
-                  className={`text-xs ${
-                    activeLink === link.id
-                      ? "text-primary"
-                      : "text-gray-400"
+                  className={`text-[10px] font-bold uppercase tracking-tighter ${
+                    activeLink === link.id ? "text-primary" : "text-gray-400"
                   }`}
                 >
                   {link.text}
