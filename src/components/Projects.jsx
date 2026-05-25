@@ -98,6 +98,39 @@ const Projects = () => {
       githubLink: "https://github.com/Shahriarshihab5/Sales-Revenue-Analysis-Dashboard",
     },
 
+
+    {
+      id: 6,
+      category: "data",
+      subCategory: "excel",
+      title: "HR Analytics Dashboard | Excel | Interactive Data Visualization",
+      description: "An interactive HR Analytics Dashboard built entirely in Microsoft Excel.",
+ 
+      images: [
+        "/Dashboard module 1 Screenshot.png", 
+        
+      ],
+      tools: ["MS Excel", "Power Pivot", "Power Query", "Slicer"],
+      liveLink: "https://github.com/Shahriarshihab5/HR-Analytics-Dashboard-Microsoft-Excel",
+      githubLink: "https://github.com/Shahriarshihab5/HR-Analytics-Dashboard-Microsoft-Excel",
+    },
+
+    {
+      id: 7,
+      category: "data",
+      subCategory: "excel",
+      title: "Sales Performance Dashboard — 2023 vs 2024",
+      description: "Excel dashboard comparing YoY sales, profit, cost, and regional/product breakdown.",
+ 
+      images: [
+        "/Dashboard Module 2 Screenshot .png", 
+        
+      ],
+      tools: ["MS Excel", "Power Pivot", "Power Query", "Slicer","Pivot Charts","DAX"],
+      liveLink: "https://github.com/Shahriarshihab5/Sales-Performance-Dashboard-2023-vs-2024",
+      githubLink: "https://github.com/Shahriarshihab5/Sales-Performance-Dashboard-2023-vs-2024",
+    },
+
     // --- SOFTWARE ENGINEERING PROJECTS ---
     {
       id: 4,
