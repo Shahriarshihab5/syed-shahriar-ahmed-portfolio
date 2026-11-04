@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-accent="sunset" data-mode="dark">
+<html lang="en" data-accent="emerald" data-mode="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,15 +10,12 @@
         try {
           var mode = localStorage.getItem("portfolio-mode-v1") === "light" ? "light" : "dark";
           var accentKey =
-            mode === "light" ? "portfolio-accent-light-v1" : "portfolio-accent-dark-v1";
-          var accent =
-            localStorage.getItem(accentKey) ||
-            (mode === "dark" ? localStorage.getItem("portfolio-accent-v2") : null);
+            mode === "light" ? "portfolio-accent-light-v2" : "portfolio-accent-dark-v2";
+          var accent = localStorage.getItem(accentKey);
           document.documentElement.dataset.mode = mode;
-          document.documentElement.dataset.accent =
-            accent || (mode === "light" ? "emerald" : "sunset");
+          document.documentElement.dataset.accent = accent || "emerald";
         } catch (error) {
-          document.documentElement.dataset.accent = "sunset";
+          document.documentElement.dataset.accent = "emerald";
           document.documentElement.dataset.mode = "dark";
         }
       })();

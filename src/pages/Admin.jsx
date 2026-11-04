@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  Activity,
   AlertCircle,
   ArrowLeft,
   ArrowUp,
@@ -8,6 +9,7 @@ import {
   BriefcaseBusiness,
   Camera,
   CheckCircle2,
+  Clock,
   Download,
   Eye,
   EyeOff,
@@ -15,23 +17,33 @@ import {
   FlaskConical,
   FolderKanban,
   Github,
+  Globe2,
   ImagePlus,
   LayoutDashboard,
   Lock,
   LogOut,
+  Monitor,
+  MousePointerClick,
   Plus,
   RefreshCw,
   Save,
   ShieldCheck,
   Sparkles,
+  Timer,
   Trash2,
   UploadCloud,
   UserRound,
+  Users,
   X,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useContent, ADMIN_SESSION_KEY } from "../components/ContentContext";
 import { compressImage } from "../lib/github";
+import {
+  ANALYTICS_STATS_URL,
+  isAnalyticsOptedOut,
+  setAnalyticsOptOut,
+} from "../lib/analytics";
 
 const ADMIN_PIN = import.meta.env.VITE_ADMIN_PIN || "shahriar2026";
 const GH_CONFIG_KEY = "portfolio-github-config";
@@ -1551,8 +1563,495 @@ const PinGate = ({ onUnlock }) => {
   );
 };
 
+const ANALYTICS_RANGES = [
+  { id: 1, label: "24h" },
+  { id: 7, label: "7 days" },
+  { id: 30, label: "30 days" },
+  { id: 90, label: "90 days" },
+];
+
+const formatDuration = (milliseconds = 0) => {
+  const ms = Math.max(0, Number(milliseconds) || 0);
+  if (ms < 1000) return "0s";
+  const seconds = Math.round(ms / 1000);
+  if (seconds < 60) return `${seconds}s`;
+  const minutes = Math.floor(seconds / 60);
+  const rest = seconds % 60;
+  if (minutes < 60) return rest ? `${minutes}m ${rest}s` : `${minutes}m`;
+  const hours = Math.floor(minutes / 60);
+  return `${hours}h ${minutes % 60}m`;
+};
+
+const formatAgo = (timestamp) => {
+  const value = Number(timestamp) || 0;
+  const diff = Date.now() - value;
+  if (!value || diff < 0) return "Just now";
+  const minutes = Math.floor(diff / 60_000);
+  if (minutes < 1) return "Just now";
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  if (days < 30) return `${days}d ago`;
+  return new Date(value).toLocaleDateString();
+};
+
+const prettySection = (value = "") =>
+  value
+    .replace(/[-_]/g, " ")
+    .replace(/\b\w/g, (character) => character.toUpperCase());
+
+const MetricCard = ({ icon: Icon, label, value, hint }) => (
+  <div className={`${panelClass} p-4`}>
+    <div className="flex items-center justify-between gap-2">
+      <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-muted">
+        {label}
+      </p>
+      <Icon size={14} className="shrink-0 text-primary/70" />
+    </div>
+    <p className="mt-2 font-display text-2xl font-bold leading-none">{value}</p>
+    {hint && <p className="mt-1.5 text-[10px] leading-snug text-muted">{hint}</p>}
+  </div>
+);
+
+const BarList = ({ title, icon: Icon, items = [], total = 0, empty = "No data yet" }) => {
+  const denominator = total || items[0]?.count || 0;
+  return (
+    <div className={`${panelClass} p-4`}>
+      <div className="mb-3 flex items-center gap-2">
+        <Icon size={13} className="text-primary" />
+        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted">
+          {title}
+        </p>
+      </div>
+      {items.length ? (
+        <ul className="space-y-2.5">
+          {items.map((item) => (
+            <li key={item.name}>
+              <div className="flex items-center justify-between gap-2 text-[11px]">
+                <span className="truncate text-light">{item.name}</span>
+                <span className="shrink-0 text-muted">{item.count}</span>
+              </div>
+              <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-white/5">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-primary to-secondary"
+                  style={{
+                    width: `${denominator ? Math.max(4, Math.round((item.count / denominator) * 100)) : 0}%`,
+                  }}
+                />
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-[11px] text-muted">{empty}</p>
+      )}
+    </div>
+  );
+};
+
+const VisitorChart = ({ series = [] }) => {
+  const max = Math.max(1, ...series.map((point) => point.sessions));
+  const hasData = series.some((point) => point.sessions > 0);
+  return (
+    <div className={`${panelClass} p-5`}>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-muted">
+            Traffic
+          </p>
+          <h3 className="font-display text-sm font-bold">Sessions over time</h3>
+        </div>
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-dark/40 px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-muted">
+          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+          {series.reduce((total, point) => total + point.sessions, 0)} sessions
+        </span>
+      </div>
+
+      <div className="mt-5 flex h-40 items-end gap-[3px]">
+        {series.map((point) => {
+          const height = point.sessions
+            ? Math.max(4, Math.round((point.sessions / max) * 100))
+            : 0;
+          return (
+            <div
+              key={point.key}
+              className="group relative flex h-full flex-1 items-end"
+              title={`${point.label} · ${point.sessions} session${
+                point.sessions === 1 ? "" : "s"
+              } · ${point.visitors} visitor${point.visitors === 1 ? "" : "s"}`}
+            >
+              <div
+                className="w-full rounded-t-[3px] bg-gradient-to-t from-primary/25 to-primary/90 opacity-80 transition-opacity group-hover:opacity-100"
+                style={{ height: `${height}%` }}
+              />
+            </div>
+          );
+        })}
+      </div>
+
+      {hasData ? (
+        <div className="mt-2 flex justify-between text-[9px] font-semibold uppercase tracking-wider text-muted">
+          <span>{series[0]?.label}</span>
+          <span>{series[Math.floor(series.length / 2)]?.label}</span>
+          <span>{series[series.length - 1]?.label}</span>
+        </div>
+      ) : (
+        <p className="mt-3 text-center text-[11px] text-muted">
+          No sessions recorded in this range yet.
+        </p>
+      )}
+    </div>
+  );
+};
+
+const AnalyticsPanel = ({ onToast }) => {
+  const [range, setRange] = useState(7);
+  const [data, setData] = useState(null);
+  const [status, setStatus] = useState("loading");
+  const [error, setError] = useState("");
+  const [updatedAt, setUpdatedAt] = useState(null);
+  const [optedOut, setOptedOut] = useState(() => isAnalyticsOptedOut());
+
+  const load = useCallback(async () => {
+    setStatus("loading");
+    setError("");
+    try {
+      const response = await fetch(`${ANALYTICS_STATS_URL}?days=${range}`, {
+        cache: "no-store",
+      });
+      const payload = await response.json().catch(() => null);
+      if (!response.ok || !payload?.ok) {
+        throw new Error(
+          payload?.message || payload?.error || `Request failed (${response.status})`
+        );
+      }
+      setData(payload);
+      setUpdatedAt(Date.now());
+      setStatus("ready");
+    } catch (failure) {
+      setError(String(failure?.message || "Could not load analytics."));
+      setStatus("error");
+    }
+  }, [range]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const toggleOptOut = () => {
+    const next = !optedOut;
+    setAnalyticsOptOut(next);
+    setOptedOut(next);
+    onToast?.(
+      "info",
+      next
+        ? "This browser will no longer be counted."
+        : "This browser will be counted again after a reload."
+    );
+  };
+
+  const totals = data?.totals;
+  const reachedService = status !== "error" || Boolean(data);
+
+  return (
+    <div className="space-y-5">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
+            Audience
+          </p>
+          <h2 className="mt-1 font-display text-xl font-bold">Visitor analytics</h2>
+          <p className="mt-1 max-w-xl text-xs leading-relaxed text-muted">
+            Anonymous, cookie-free numbers from your live site. See how many people
+            visit and how long they stay.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          {totals && (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider text-emerald-200">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
+              {totals.live} live now
+            </span>
+          )}
+          <div className="flex rounded-full border border-line bg-surface/60 p-1">
+            {ANALYTICS_RANGES.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setRange(item.id)}
+                className={`rounded-full px-2.5 py-1 text-[10px] font-bold transition-colors ${
+                  range === item.id
+                    ? "bg-primary/15 text-primary"
+                    : "text-muted hover:text-light"
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={load}
+            disabled={status === "loading"}
+            className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface/60 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-muted transition-colors hover:border-primary/40 hover:text-primary disabled:opacity-50"
+          >
+            <RefreshCw
+              size={12}
+              className={status === "loading" ? "animate-spin" : ""}
+            />
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      {status === "error" && (
+        <div className="rounded-2xl border border-amber-400/30 bg-amber-400/10 p-4 text-amber-100">
+          <p className="flex items-center gap-2 text-xs font-bold">
+            <AlertCircle size={14} />
+            Analytics is not reachable yet
+          </p>
+          <p className="mt-1.5 text-[11px] leading-relaxed text-amber-100/80">
+            The tracker runs as a Netlify Function on{" "}
+            <span className="font-semibold">syed-shahriar-ahmed-portfolio.netlify.app</span>.
+            If you just deployed, wait 1–2 minutes for the build to finish, then press
+            refresh. You can also open the live site and scroll around first.
+          </p>
+          <p className="mt-1.5 break-words text-[10px] text-amber-100/60">{error}</p>
+          <button
+            type="button"
+            onClick={load}
+            className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-amber-100 transition-colors hover:bg-amber-400/20"
+          >
+            <RefreshCw size={12} />
+            Try again
+          </button>
+        </div>
+      )}
+
+      {status === "loading" && !data && (
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <div
+              key={index}
+              className={`${panelClass} h-[92px] animate-pulse bg-surface/40`}
+            />
+          ))}
+        </div>
+      )}
+
+      {data && totals && (
+        <>
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+            <MetricCard
+              icon={Users}
+              label="Visitors"
+              value={totals.visitors}
+              hint={`${totals.newVisitors} new · ${totals.returningVisitors} returning`}
+            />
+            <MetricCard
+              icon={Activity}
+              label="Sessions"
+              value={totals.sessions}
+              hint={`${totals.pageviews} pageviews total`}
+            />
+            <MetricCard
+              icon={Clock}
+              label="Avg. time on site"
+              value={formatDuration(totals.avgDurationMs)}
+              hint={`${formatDuration(totals.totalDurationMs)} measured`}
+            />
+            <MetricCard
+              icon={Eye}
+              label="Pageviews"
+              value={totals.pageviews}
+              hint={
+                totals.sessions
+                  ? `${(totals.pageviews / totals.sessions).toFixed(1)} per session`
+                  : "No sessions yet"
+              }
+            />
+            <MetricCard
+              icon={Timer}
+              label="Bounce rate"
+              value={`${Math.round(totals.bounceRate * 100)}%`}
+              hint="Left in under 10 seconds"
+            />
+          </div>
+
+          <VisitorChart series={data.series} />
+
+          <div className={`${panelClass} overflow-hidden`}>
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-4 py-3">
+              <div>
+                <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-muted">
+                  Latest activity
+                </p>
+                <h3 className="font-display text-sm font-bold">Recent sessions</h3>
+              </div>
+              <span className="text-[10px] text-muted">
+                {updatedAt ? `Updated ${formatAgo(updatedAt)}` : "Live feed"}
+              </span>
+            </div>
+            {data.recent.length ? (
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[720px] text-left text-[11px]">
+                  <thead>
+                    <tr className="text-[9px] font-bold uppercase tracking-[0.14em] text-muted">
+                      <th className="px-4 py-2.5 font-bold">When</th>
+                      <th className="px-4 py-2.5 font-bold">Time on site</th>
+                      <th className="px-4 py-2.5 font-bold">Location</th>
+                      <th className="px-4 py-2.5 font-bold">Device</th>
+                      <th className="px-4 py-2.5 font-bold">Referrer</th>
+                      <th className="px-4 py-2.5 font-bold">Sections viewed</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.recent.map((session) => (
+                      <tr
+                        key={`${session.startedAt}-${session.id}`}
+                        className="border-t border-line/60"
+                      >
+                        <td
+                          className="whitespace-nowrap px-4 py-2.5 text-muted"
+                          title={new Date(session.startedAt).toLocaleString()}
+                        >
+                          {formatAgo(session.startedAt)}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2.5 font-semibold text-light">
+                          {formatDuration(session.durationMs)}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2.5 text-muted">
+                          {session.country}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-2.5 text-muted">
+                          {session.device} · {session.browser}
+                        </td>
+                        <td
+                          className="max-w-[150px] truncate px-4 py-2.5 text-muted"
+                          title={session.referrer}
+                        >
+                          {session.referrer}
+                        </td>
+                        <td className="px-4 py-2.5">
+                          <div
+                            className="flex flex-wrap items-center gap-1"
+                            title={session.sections.map(prettySection).join(", ")}
+                          >
+                            {session.sections.length ? (
+                              <>
+                                {session.sections.slice(0, 2).map((section) => (
+                                  <span
+                                    key={section}
+                                    className="rounded-full border border-line bg-white/5 px-2 py-0.5 text-[9px] text-muted"
+                                  >
+                                    {prettySection(section)}
+                                  </span>
+                                ))}
+                                {session.sections.length > 2 && (
+                                  <span className="text-[9px] text-muted">
+                                    +{session.sections.length - 2}
+                                  </span>
+                                )}
+                              </>
+                            ) : (
+                              <span className="text-muted">—</span>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p className="px-4 py-8 text-center text-[11px] text-muted">
+                No sessions in this range yet.
+              </p>
+            )}
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            <BarList
+              title="Countries"
+              icon={Globe2}
+              items={data.breakdowns.countries}
+              total={totals.sessions}
+            />
+            <BarList
+              title="Devices"
+              icon={Monitor}
+              items={data.breakdowns.devices}
+              total={totals.sessions}
+            />
+            <BarList
+              title="Browsers"
+              icon={Activity}
+              items={data.breakdowns.browsers}
+              total={totals.sessions}
+            />
+            <BarList
+              title="Referrers"
+              icon={MousePointerClick}
+              items={data.breakdowns.referrers}
+              total={totals.sessions}
+            />
+            <BarList
+              title="Sections viewed"
+              icon={LayoutDashboard}
+              items={data.breakdowns.sections}
+              total={Math.max(1, data.breakdowns.sections[0]?.count || 0)}
+              empty="Scroll tracking starts on the next visit."
+            />
+            <BarList
+              title="Operating systems"
+              icon={Monitor}
+              items={data.breakdowns.systems}
+              total={totals.sessions}
+            />
+          </div>
+
+          {totals.sessions === 0 && reachedService && (
+            <div className="rounded-2xl border border-line bg-surface/40 p-4 text-center">
+              <p className="text-xs font-semibold text-light">
+                No visits in this range yet
+              </p>
+              <p className="mt-1 text-[11px] text-muted">
+                Open your live site in another tab, scroll through a few sections, then
+                come back and refresh.
+              </p>
+            </div>
+          )}
+        </>
+      )}
+
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-surface/40 px-4 py-3">
+        <p className="max-w-xl text-[10px] leading-relaxed text-muted">
+          Cookie-free and anonymous. No IP addresses, names, or personal details are
+          stored. Visits from both your Vercel and Netlify sites are collected by the
+          same Netlify Function.
+        </p>
+        <button
+          type="button"
+          onClick={toggleOptOut}
+          className={`inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider transition-colors ${
+            optedOut
+              ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-200"
+              : "border-line bg-surface/60 text-muted hover:border-primary/40 hover:text-primary"
+          }`}
+        >
+          {optedOut ? <Eye size={12} /> : <EyeOff size={12} />}
+          {optedOut ? "Count my visits" : "Don't count my visits"}
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const TABS = [
   { id: "publish", label: "Publish", icon: LayoutDashboard },
+  { id: "analytics", label: "Analytics", icon: Activity },
   { id: "projects", label: "Projects", icon: FolderKanban },
   { id: "experience", label: "Experience", icon: BriefcaseBusiness },
   { id: "research", label: "Research", icon: FlaskConical },
@@ -1709,6 +2208,7 @@ const AdminDashboard = ({ onLock }) => {
         {/* Main */}
         <main className="min-w-0 flex-1">
           {tab === "publish" && <PublishPanel onToast={showToast} />}
+          {tab === "analytics" && <AnalyticsPanel onToast={showToast} />}
           {tab === "projects" && <ProjectPanel />}
           {tab === "experience" && <ExperiencePanel />}
           {tab === "research" && <ResearchPanel />}

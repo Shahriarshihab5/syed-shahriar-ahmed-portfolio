@@ -11,6 +11,7 @@
     "content:default": "node scripts/generate-content.mjs"
   },
   "dependencies": {
+    "@netlify/blobs": "^11.1.7",
     "@tailwindcss/vite": "^4.1.14",
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.545.0",

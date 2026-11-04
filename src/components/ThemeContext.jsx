@@ -28,13 +28,13 @@ export const ACCENTS = [
   },
 ];
 
-const LEGACY_ACCENT_KEY = "portfolio-accent-v2";
 const ACCENT_KEYS = {
-  dark: "portfolio-accent-dark-v1",
-  light: "portfolio-accent-light-v1",
+  dark: "portfolio-accent-dark-v2",
+  light: "portfolio-accent-light-v2",
 };
 const MODE_KEY = "portfolio-mode-v1";
-const DEFAULT_ACCENT = { dark: "sunset", light: "emerald" };
+// Both modes now start on Emerald.
+const DEFAULT_ACCENT = { dark: "emerald", light: "emerald" };
 const DEFAULT_MODE = "dark";
 const ThemeContext = createContext(null);
 
@@ -48,9 +48,7 @@ const readStoredMode = () => {
 
 const readStoredAccent = (mode) => {
   try {
-    const saved =
-      localStorage.getItem(ACCENT_KEYS[mode]) ||
-      (mode === "dark" ? localStorage.getItem(LEGACY_ACCENT_KEY) : null);
+    const saved = localStorage.getItem(ACCENT_KEYS[mode]);
     return ACCENTS.some((item) => item.id === saved) ? saved : DEFAULT_ACCENT[mode];
   } catch {
     return DEFAULT_ACCENT[mode];

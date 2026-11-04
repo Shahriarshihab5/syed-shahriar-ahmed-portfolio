@@ -11,6 +11,7 @@ import AnimatedBackground from "./components/AnimatedBackground";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import { ThemeProvider } from "./components/ThemeContext";
 import { ContentProvider } from "./components/ContentContext";
+import { startAnalytics } from "./lib/analytics";
 
 // Lazy load sections that appear lower on the page
 const About = lazy(() => import("./components/About"));
@@ -77,6 +78,8 @@ function Portfolio() {
 }
 
 function App() {
+  useEffect(() => startAnalytics(), []);
+
   return (
     <ThemeProvider>
       <ContentProvider>

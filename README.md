@@ -37,6 +37,7 @@ The PIN is a convenience lock in the browser. The real protection for publishing
 - Certificates (with image upload)
 - Life & leadership activities (with image galleries)
 - Profile details, hero portrait, and the downloadable CV
+- Visitor analytics for the live site (read-only)
 - Visibility, ordering, and deletion for every item
 
 Every edit is saved to a local draft immediately. Use **Publish** to commit it to GitHub.
@@ -61,10 +62,27 @@ Upload a new hero portrait in the same tab. The image is compressed in the brows
 
 - Dark mode is the default for new visitors.
 - A sun/moon button (top-right) switches between dark and light mode.
-- Light mode defaults to the **Emerald** palette; dark mode defaults to **Sunset**.
+- Both modes default to the **Emerald** palette.
 - Each mode remembers the palette you last chose there.
 - The palette menu beside the sun/moon button offers Sunset, Aurora, Emerald, and Azure.
 - Preferences are stored in `localStorage`, so they persist between visits.
+
+## Visitor analytics
+
+Open **Admin → Analytics** to see how many people visit the live site and how long they stay. It shows:
+
+- visitors, sessions, pageviews, average time on site, and bounce rate
+- a traffic chart for 24 hours, 7 days, 30 days, or 90 days
+- recent sessions with their duration, country, device, browser, and referrer
+- breakdowns by country, device, browser, referrer, and section viewed
+
+The tracker is cookie-free and anonymous. It stores no IP addresses, names, or personal details.
+
+It needs no third-party account or API key. A small Netlify Function (`netlify/functions/track.mjs`) writes anonymous sessions to **Netlify Blobs**, and `netlify/functions/stats.mjs` aggregates them for the admin panel. Both the Vercel and Netlify deployments send their visits to the same function, so keep the Netlify site online. To use a different site, set `VITE_ANALYTICS_ORIGIN` at build time.
+
+Use **Don't count my visits** in the Analytics tab to exclude your own browser; it takes effect on the next page load.
+
+The functions run on Node.js 22, which `netlify.toml` sets.
 
 ## Content source
 
