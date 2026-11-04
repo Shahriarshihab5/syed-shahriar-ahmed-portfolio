@@ -194,7 +194,13 @@ const ImageManager = ({ images = [], onChange, label = "Images" }) => {
   );
 };
 
-const SingleImage = ({ value, onChange, label = "Image" }) => {
+const SingleImage = ({
+  value,
+  onChange,
+  label = "Image",
+  maxWidth = 1600,
+  previewClass = "h-24 w-32 rounded-xl",
+}) => {
   const inputRef = useRef(null);
   const [busy, setBusy] = useState(false);
 
@@ -202,7 +208,7 @@ const SingleImage = ({ value, onChange, label = "Image" }) => {
     if (!file || !file.type.startsWith("image/")) return;
     setBusy(true);
     try {
-      onChange(await compressImage(file));
+      onChange(await compressImage(file, { maxWidth }));
     } finally {
       setBusy(false);
       if (inputRef.current) inputRef.current.value = "";
@@ -213,7 +219,7 @@ const SingleImage = ({ value, onChange, label = "Image" }) => {
     <div>
       <span className={labelClass}>{label}</span>
       <div className="flex items-center gap-3">
-        <div className="relative h-24 w-32 shrink-0 overflow-hidden rounded-xl border border-line bg-dark">
+        <div className={`relative shrink-0 overflow-hidden border border-line bg-dark ${previewClass}`}>
           {value ? (
             <img src={value} alt="" className="h-full w-full object-cover" />
           ) : (
@@ -1019,6 +1025,32 @@ const ProfilePanel = () => {
             Contact details and the CV that every visitor downloads.
           </p>
         </div>
+      </div>
+
+      <div className={`${panelClass} p-5`}>
+        <div className="mb-4 flex items-center gap-3">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/20">
+            <ImagePlus size={18} />
+          </span>
+          <div>
+            <p className="text-sm font-bold text-light">Profile photo</p>
+            <p className="text-[11px] text-muted">
+              Shown in the hero section. A square photo works best.
+            </p>
+          </div>
+        </div>
+        <SingleImage
+          value={profile.photoUrl || ""}
+          onChange={(next) => update({ photoUrl: next })}
+          label="Hero portrait"
+          maxWidth={900}
+          previewClass="h-24 w-24 rounded-full"
+        />
+        <p className="mt-3 flex items-start gap-2 rounded-xl border border-line bg-dark/40 p-3 text-[11px] leading-relaxed text-muted">
+          <ShieldCheck size={14} className="mt-0.5 shrink-0 text-primary" />
+          Photos are optimised in your browser. Remove the image to fall back to the default
+          portrait.
+        </p>
       </div>
 
       <div className={`${panelClass} p-5`}>

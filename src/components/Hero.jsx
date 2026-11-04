@@ -11,7 +11,8 @@ import {
   BarChart3,
   Database,
   BrainCircuit,
-  Award,
+  FileSpreadsheet,
+  Atom,
 } from "lucide-react";
 import { useContent } from "./ContentContext";
 
@@ -81,8 +82,6 @@ const Hero = () => {
       className="relative flex min-h-screen items-center overflow-hidden px-6 pb-24 pt-32 md:px-12 lg:px-20 lg:pt-28"
     >
       {/* Ambient light */}
-      <div className="pointer-events-none absolute left-1/2 top-1/3 h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-primary/10 blur-[130px]" />
-      <div className="pointer-events-none absolute -right-32 top-24 h-96 w-96 rounded-full bg-secondary/10 blur-[120px]" />
 
       {/* Floating particles */}
       <div className="pointer-events-none absolute inset-0">
@@ -119,7 +118,7 @@ const Hero = () => {
               </span>
               {profile.availability || "Available for opportunities"}
             </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface/60 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-muted backdrop-blur">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface/60 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-muted">
               <MapPin size={11} className="text-primary" />
               {profile.location || "Dhaka, Bangladesh"}
             </span>
@@ -195,7 +194,7 @@ const Hero = () => {
               rel="noopener noreferrer"
               whileHover={{ y: -3 }}
               whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-6 py-3.5 text-sm font-semibold text-light backdrop-blur transition-colors duration-300 hover:border-primary/50 hover:text-primary"
+              className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-6 py-3.5 text-sm font-semibold text-light transition-colors duration-300 hover:border-primary/50 hover:text-primary"
             >
               <Download size={16} />
               Download CV
@@ -217,7 +216,7 @@ const Hero = () => {
                   rel="noopener noreferrer"
                   aria-label={label}
                   whileHover={{ y: -2 }}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface/60 text-muted backdrop-blur transition-colors duration-300 hover:border-primary/50 hover:text-primary"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface/60 text-muted transition-colors duration-300 hover:border-primary/50 hover:text-primary"
                 >
                   <Icon size={17} />
                 </motion.a>
@@ -249,26 +248,29 @@ const Hero = () => {
           transition={{ duration: 0.9, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
           className="relative mx-auto flex w-full max-w-[30rem] items-center justify-center lg:max-w-none"
         >
-          <div className="relative aspect-square w-[19rem] sm:w-[23rem] lg:w-[26rem]">
-            {/* Rotating conic aura */}
-            <div className="animate-spin-slow absolute -inset-5 rounded-full bg-[conic-gradient(from_0deg,var(--accent-1),var(--accent-2),var(--accent-3),var(--accent-1))] opacity-30 blur-2xl" />
-            <div className="animate-spin-slower absolute -inset-2 rounded-full bg-[conic-gradient(from_180deg,transparent,var(--accent-2),transparent_55%,var(--accent-1),transparent)] opacity-70" />
-            <div className="absolute -inset-2 rounded-full border border-white/10" />
+          <div className="relative aspect-square w-[18rem] sm:w-[22rem] lg:w-[25rem]">
+            {/* Soft halo + orbit ring */}
+            <div className="portrait-halo absolute -inset-14 rounded-full" />
+            <div className="absolute -inset-7 rounded-full border border-dashed border-white/10" />
+            <div className="gradient-ring absolute -inset-2 rounded-full opacity-90" />
 
             {/* Portrait with subtle 3D tilt */}
             <motion.div
               onPointerMove={handleTilt}
               onPointerLeave={resetTilt}
               style={{ rotateX, rotateY, transformPerspective: 1000 }}
-              className="relative h-full w-full overflow-hidden rounded-full border border-white/15 bg-surface shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)]"
+              className="relative h-full w-full overflow-hidden rounded-full border border-white/10 bg-surface shadow-[0_36px_100px_-32px_rgba(0,0,0,0.95)]"
             >
               <img
-                src="/cv.png"
-                alt="Syed Shahriar Ahmed — Data Analyst & BI Specialist"
-                className="h-full w-full object-cover"
+                src={profile.photoUrl || "/cv.png"}
+                alt={`${profile.name || "Syed Shahriar Ahmed"} — ${profile.role || "Data Analyst"}`}
+                className="h-full w-full scale-105 object-cover transition-transform duration-700 hover:scale-110"
                 loading="eager"
+                onError={(event) => {
+                  event.currentTarget.src = "/cv.png";
+                }}
               />
-              <div className="pointer-events-none absolute inset-0 rounded-full bg-gradient-to-t from-dark/60 via-transparent to-transparent" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-dark/55 via-transparent to-transparent" />
               <div className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-inset ring-white/10" />
             </motion.div>
 
@@ -277,7 +279,7 @@ const Hero = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.7, duration: 0.6 }}
-              className="animate-float-soft absolute -left-6 top-[14%] flex items-center gap-2 rounded-2xl border border-line bg-surface/80 px-3.5 py-2.5 shadow-xl backdrop-blur-xl sm:-left-10"
+              className="animate-float-soft absolute -left-5 top-[4%] flex items-center gap-2 rounded-2xl border border-line bg-surface/95 px-3 py-2 shadow-xl sm:-left-8 sm:px-3.5 sm:py-2.5"
             >
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15 text-primary">
                 <BarChart3 size={16} />
@@ -288,9 +290,22 @@ const Hero = () => {
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.85, duration: 0.6 }}
-              className="animate-float absolute -right-4 top-[42%] flex items-center gap-2 rounded-2xl border border-line bg-surface/80 px-3.5 py-2.5 shadow-xl backdrop-blur-xl sm:-right-8"
-              style={{ animationDelay: "1.2s" }}
+              transition={{ delay: 0.8, duration: 0.6 }}
+              className="animate-float absolute -right-4 top-[12%] flex items-center gap-2 rounded-2xl border border-line bg-surface/95 px-3 py-2 shadow-xl sm:-right-7 sm:px-3.5 sm:py-2.5"
+              style={{ animationDelay: "1.6s" }}
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-400/15 text-emerald-300">
+                <FileSpreadsheet size={16} />
+              </span>
+              <span className="text-[11px] font-bold text-light">Excel</span>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.9, duration: 0.6 }}
+              className="animate-float absolute -left-6 top-[38%] flex items-center gap-2 rounded-2xl border border-line bg-surface/95 px-3 py-2 shadow-xl sm:-left-9 sm:px-3.5 sm:py-2.5"
+              style={{ animationDelay: "0.9s" }}
             >
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary/15 text-secondary">
                 <Database size={16} />
@@ -299,29 +314,29 @@ const Hero = () => {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 1, duration: 0.6 }}
-              className="animate-float-soft absolute -bottom-2 left-[8%] flex items-center gap-2 rounded-2xl border border-line bg-surface/80 px-3.5 py-2.5 shadow-xl backdrop-blur-xl"
-              style={{ animationDelay: "0.6s" }}
+              className="animate-float-soft absolute -right-4 top-[40%] flex items-center gap-2 rounded-2xl border border-line bg-surface/95 px-3 py-2 shadow-xl sm:-right-8 sm:px-3.5 sm:py-2.5"
+              style={{ animationDelay: "1.9s" }}
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-400/15 text-cyan-300">
+                <Atom size={16} />
+              </span>
+              <span className="text-[11px] font-bold text-light">React</span>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1.1, duration: 0.6 }}
+              className="animate-float-soft absolute -left-4 top-[70%] flex items-center gap-2 rounded-2xl border border-line bg-surface/95 px-3 py-2 shadow-xl sm:-left-7 sm:px-3.5 sm:py-2.5"
+              style={{ animationDelay: "0.4s" }}
             >
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/15 text-accent">
                 <BrainCircuit size={16} />
               </span>
               <span className="text-[11px] font-bold text-light">Python / ML</span>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.15, duration: 0.6 }}
-              className="animate-float absolute -bottom-6 right-[4%] flex items-center gap-2 rounded-2xl border border-emerald-400/25 bg-surface/80 px-3.5 py-2.5 shadow-xl backdrop-blur-xl"
-              style={{ animationDelay: "1.8s" }}
-            >
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-400/15 text-emerald-300">
-                <Award size={16} />
-              </span>
-              <span className="text-[11px] font-bold text-light">IEEE Published</span>
             </motion.div>
           </div>
         </motion.div>

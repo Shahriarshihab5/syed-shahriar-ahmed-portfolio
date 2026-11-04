@@ -1,17 +1,25 @@
 <!doctype html>
-<html lang="en" data-accent="sunset">
+<html lang="en" data-accent="sunset" data-mode="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#06060c" />
     <script>
-      // Apply the saved palette before first paint to avoid a colour flash.
+      // Apply the saved palette + light/dark mode before first paint to avoid a flash.
       (function () {
         try {
-          var saved = localStorage.getItem("portfolio-accent-v2");
-          document.documentElement.dataset.accent = saved || "sunset";
+          var mode = localStorage.getItem("portfolio-mode-v1") === "light" ? "light" : "dark";
+          var accentKey =
+            mode === "light" ? "portfolio-accent-light-v1" : "portfolio-accent-dark-v1";
+          var accent =
+            localStorage.getItem(accentKey) ||
+            (mode === "dark" ? localStorage.getItem("portfolio-accent-v2") : null);
+          document.documentElement.dataset.mode = mode;
+          document.documentElement.dataset.accent =
+            accent || (mode === "light" ? "emerald" : "sunset");
         } catch (error) {
           document.documentElement.dataset.accent = "sunset";
+          document.documentElement.dataset.mode = "dark";
         }
       })();
     </script>

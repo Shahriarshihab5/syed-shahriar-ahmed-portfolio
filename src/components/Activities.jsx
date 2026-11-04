@@ -23,7 +23,7 @@ const ActivityCard = ({ activity, index }) => {
       viewport={{ once: true, margin: "-50px" }}
       transition={{ delay: index * 0.07, duration: 0.5 }}
       whileHover={{ y: -8 }}
-      className="group gradient-border relative flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-surface/75 backdrop-blur-md transition-colors duration-300 hover:border-primary/40"
+      className="group gradient-border relative flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-surface/90 transition-colors duration-300 hover:border-primary/40"
     >
       <div className="relative h-72 overflow-hidden bg-dark">
         <AnimatePresence mode="wait">
@@ -45,7 +45,7 @@ const ActivityCard = ({ activity, index }) => {
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-surface via-surface/25 to-transparent" />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
-        <span className="absolute left-4 top-4 z-20 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-dark/65 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.14em] text-light backdrop-blur-md">
+        <span className="absolute left-4 top-4 z-20 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-dark/65 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.14em] text-light">
           <Quote size={10} className="text-primary" />
           {activity.role}
         </span>
@@ -96,10 +96,10 @@ const Activities = () => {
 
   return (
     <section id="activities" className="section-shell relative overflow-hidden">
-      <div className="pointer-events-none absolute left-1/3 top-10 h-72 w-72 rounded-full bg-accent/10 blur-[130px]" />
 
       <SectionHeading
         eyebrow="Beyond the Screen"
+        number="04"
         icon={Camera}
         title="Life &"
         highlight="Leadership"

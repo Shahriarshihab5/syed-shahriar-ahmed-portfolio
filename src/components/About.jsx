@@ -70,11 +70,10 @@ const About = () => {
 
   return (
     <section id="about" className="section-shell relative overflow-hidden">
-      <div className="pointer-events-none absolute left-0 top-1/4 h-80 w-80 rounded-full bg-primary/10 blur-[130px]" />
-      <div className="pointer-events-none absolute bottom-0 right-0 h-80 w-80 rounded-full bg-secondary/10 blur-[130px]" />
 
       <SectionHeading
         eyebrow="About Me"
+        number="01"
         icon={Sparkles}
         title="Expertise &"
         highlight="Foundation"
@@ -84,7 +83,7 @@ const About = () => {
       <div className="relative z-10 mx-auto mb-20 grid max-w-7xl items-start gap-8 lg:grid-cols-2">
         {/* Bio */}
         <RevealOnScroll direction="up">
-          <div className="gradient-border relative overflow-hidden rounded-3xl border border-line bg-surface/70 p-8 backdrop-blur-md md:p-10">
+          <div className="gradient-border relative overflow-hidden rounded-3xl border border-line bg-surface/90 p-8 md:p-10">
             <FaQuoteLeft className="mb-5 text-3xl text-primary/30" />
 
             <div className="space-y-5 text-sm leading-relaxed text-muted md:text-base">
@@ -135,7 +134,7 @@ const About = () => {
 
         {/* Skills */}
         <RevealOnScroll direction="up" delay={0.1}>
-          <div className="rounded-3xl border border-line bg-surface/70 p-8 backdrop-blur-md md:p-10">
+          <div className="rounded-3xl border border-line bg-surface/90 p-8 md:p-10">
             <div className="mb-7 flex items-center justify-between">
               <h3 className="font-display text-lg font-bold text-light">Core Toolkit</h3>
               <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted">
@@ -192,7 +191,7 @@ const About = () => {
               <RevealOnScroll key={role.id} direction="up" delay={index * 0.08}>
                 <motion.article
                   whileHover={{ y: -3 }}
-                  className="gradient-border group relative overflow-hidden rounded-3xl border border-line bg-surface/70 p-6 backdrop-blur-md transition-colors duration-300 hover:border-primary/40 md:p-8"
+                  className="gradient-border group relative overflow-hidden rounded-3xl border border-line bg-surface/90 p-6 transition-colors duration-300 hover:border-primary/40 md:p-8"
                 >
                   <div className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-primary/5 blur-3xl" />
 
@@ -266,7 +265,7 @@ const About = () => {
             viewport={{ once: true, margin: "-40px" }}
             transition={{ delay: index * 0.08, duration: 0.5 }}
             whileHover={{ y: -5 }}
-            className="group relative overflow-hidden rounded-2xl border border-line bg-surface/70 p-7 text-center backdrop-blur-md transition-colors duration-300 hover:border-primary/40"
+            className="group relative overflow-hidden rounded-2xl border border-line bg-surface/90 p-7 text-center transition-colors duration-300 hover:border-primary/40"
           >
             <div className="pointer-events-none absolute -bottom-4 -right-3 text-6xl text-white/[0.04] transition-colors duration-500 group-hover:text-primary/10">
               {stat.icon}

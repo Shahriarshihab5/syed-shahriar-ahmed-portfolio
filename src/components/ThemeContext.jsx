@@ -28,26 +28,54 @@ export const ACCENTS = [
   },
 ];
 
-const STORAGE_KEY = "portfolio-accent-v2";
-const DEFAULT_ACCENT = "sunset";
+const LEGACY_ACCENT_KEY = "portfolio-accent-v2";
+const ACCENT_KEYS = {
+  dark: "portfolio-accent-dark-v1",
+  light: "portfolio-accent-light-v1",
+};
+const MODE_KEY = "portfolio-mode-v1";
+const DEFAULT_ACCENT = { dark: "sunset", light: "emerald" };
+const DEFAULT_MODE = "dark";
 const ThemeContext = createContext(null);
 
+const readStoredMode = () => {
+  try {
+    return localStorage.getItem(MODE_KEY) === "light" ? "light" : "dark";
+  } catch {
+    return DEFAULT_MODE;
+  }
+};
+
+const readStoredAccent = (mode) => {
+  try {
+    const saved =
+      localStorage.getItem(ACCENT_KEYS[mode]) ||
+      (mode === "dark" ? localStorage.getItem(LEGACY_ACCENT_KEY) : null);
+    return ACCENTS.some((item) => item.id === saved) ? saved : DEFAULT_ACCENT[mode];
+  } catch {
+    return DEFAULT_ACCENT[mode];
+  }
+};
+
 export const ThemeProvider = ({ children }) => {
-  const [accent, setAccentState] = useState(DEFAULT_ACCENT);
+  const [mode, setModeState] = useState(readStoredMode);
+  const [accent, setAccentState] = useState(() => readStoredAccent(mode));
 
-  // Restore the visitor's last palette choice.
-  useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved && ACCENTS.some((item) => item.id === saved)) {
-      setAccentState(saved);
-    }
-  }, []);
-
-  // Keep the document + storage in sync.
+  // Keep the document + storage in sync. Each mode remembers its own palette.
   useEffect(() => {
     document.documentElement.dataset.accent = accent;
-    localStorage.setItem(STORAGE_KEY, accent);
-  }, [accent]);
+    localStorage.setItem(ACCENT_KEYS[mode], accent);
+  }, [accent, mode]);
+
+  useEffect(() => {
+    document.documentElement.dataset.mode = mode;
+    localStorage.setItem(MODE_KEY, mode);
+
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) {
+      meta.setAttribute("content", mode === "light" ? "#f6f2e9" : "#08090f");
+    }
+  }, [mode]);
 
   const setAccent = (id) => {
     if (ACCENTS.some((item) => item.id === id)) {
@@ -55,8 +83,21 @@ export const ThemeProvider = ({ children }) => {
     }
   };
 
+  const setMode = (nextMode) => {
+    const normalized = nextMode === "light" ? "light" : "dark";
+    setModeState(normalized);
+    // Apply that mode's saved palette (light defaults to Emerald).
+    setAccentState(readStoredAccent(normalized));
+  };
+
+  const toggleMode = () => {
+    setMode(mode === "dark" ? "light" : "dark");
+  };
+
   return (
-    <ThemeContext.Provider value={{ accent, setAccent, accents: ACCENTS }}>
+    <ThemeContext.Provider
+      value={{ accent, setAccent, accents: ACCENTS, mode, setMode, toggleMode }}
+    >
       {children}
     </ThemeContext.Provider>
   );

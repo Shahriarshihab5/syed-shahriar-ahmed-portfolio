@@ -10,6 +10,7 @@ export const defaultContent = {
     availability: "Available for opportunities",
     cvUrl: "/Syed_Shahriar_Ahmed_Resume.pdf",
     cvFileName: "Syed_Shahriar_Ahmed_Resume.pdf",
+    photoUrl: "/cv.png",
     github: "https://github.com/Shahriarshihab5",
     linkedin: "https://www.linkedin.com/in/syed-shahriar-ahmed-183233208/",
   },

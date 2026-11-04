@@ -102,11 +102,10 @@ const Projects = () => {
 
   return (
     <section id="projects" className="section-shell relative overflow-hidden">
-      <div className="pointer-events-none absolute left-1/4 top-10 h-72 w-72 rounded-full bg-primary/10 blur-[120px]" />
-      <div className="pointer-events-none absolute bottom-10 right-1/4 h-72 w-72 rounded-full bg-secondary/10 blur-[120px]" />
 
       <SectionHeading
         eyebrow="Portfolio"
+        number="02"
         icon={Sparkles}
         title="Featured"
         highlight="Projects"
@@ -116,7 +115,7 @@ const Projects = () => {
       {/* Main tabs */}
       <RevealOnScroll direction="up" delay={0.05}>
         <div className="mb-5 flex justify-center">
-          <div className="flex rounded-full border border-line bg-surface/70 p-1.5 backdrop-blur-xl">
+          <div className="flex rounded-full border border-line bg-surface/90 p-1.5">
             {topTabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -192,7 +191,7 @@ const Projects = () => {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
-              className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-line bg-surface/50 px-6 py-24 text-center backdrop-blur-sm"
+              className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-line bg-surface/50 px-6 py-24 text-center"
             >
               <div className="mb-5 rounded-2xl bg-primary/10 p-4 ring-1 ring-primary/20">
                 <Sparkles className="animate-pulse text-primary" size={34} />
@@ -220,11 +219,11 @@ const Projects = () => {
                   initial={{ opacity: 0, y: 22 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.06, duration: 0.5 }}
-                  className="group card-lift gradient-border relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface/80 backdrop-blur-sm"
+                  className="group card-lift gradient-border relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface/80"
                 >
                   <ProjectImage images={project.images} title={project.title} />
 
-                  <span className="absolute left-4 top-4 z-20 rounded-full border border-white/15 bg-dark/70 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.14em] text-light backdrop-blur-md">
+                  <span className="absolute left-4 top-4 z-20 rounded-full border border-white/15 bg-dark/70 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.14em] text-light">
                     {project.category === "data"
                       ? badgeLabels[project.subCategory] || "Data"
                       : "Software"}

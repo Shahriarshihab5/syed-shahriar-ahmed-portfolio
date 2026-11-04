@@ -85,10 +85,10 @@ const Contact = () => {
 
   return (
     <section id="contact" className="section-shell relative overflow-hidden">
-      <div className="pointer-events-none absolute left-1/2 top-10 h-80 w-80 -translate-x-1/2 rounded-full bg-primary/10 blur-[130px]" />
 
       <SectionHeading
         eyebrow="Contact"
+        number="06"
         icon={Mail}
         title="Get In"
         highlight="Touch"
@@ -99,7 +99,7 @@ const Contact = () => {
         {/* Left: details */}
         <RevealOnScroll direction="right">
           <div className="space-y-6">
-            <div className="rounded-3xl border border-line bg-surface/70 p-7 backdrop-blur-md">
+            <div className="rounded-3xl border border-line bg-surface/90 p-7">
               <h3 className="font-display text-xl font-bold text-light">Contact Information</h3>
               <p className="mt-3 text-sm leading-relaxed text-muted">
                 I&apos;m always open to discussing new projects, creative ideas, or opportunities
@@ -139,7 +139,7 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="rounded-3xl border border-line bg-surface/70 p-7 backdrop-blur-md">
+            <div className="rounded-3xl border border-line bg-surface/90 p-7">
               <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-muted">Follow Me</h4>
               <div className="mt-4 flex gap-3">
                 {socialLinks.map((social) => {
@@ -174,7 +174,7 @@ const Contact = () => {
         <RevealOnScroll direction="left" delay={0.1}>
           <form
             onSubmit={handleSubmit}
-            className="gradient-border relative overflow-hidden rounded-3xl border border-line bg-surface/75 p-6 backdrop-blur-md md:p-8"
+            className="gradient-border relative overflow-hidden rounded-3xl border border-line bg-surface/90 p-6 md:p-8"
           >
             <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-primary/10 blur-3xl" />
 

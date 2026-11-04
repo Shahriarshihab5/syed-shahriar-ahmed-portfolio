@@ -10,10 +10,10 @@ const Certificates = () => {
 
   return (
     <section id="certificates" className="section-shell relative overflow-hidden">
-      <div className="pointer-events-none absolute right-1/4 top-16 h-72 w-72 rounded-full bg-secondary/10 blur-[130px]" />
 
       <SectionHeading
         eyebrow="Credentials"
+        number="05"
         icon={Award}
         title="Professional"
         highlight="Credentials"
@@ -28,7 +28,7 @@ const Certificates = () => {
             <RevealOnScroll key={cert.id} direction="up" delay={index * 0.08}>
               <motion.article
                 whileHover={{ y: -6 }}
-                className="group gradient-border relative h-full overflow-hidden rounded-3xl border border-line bg-surface/75 p-4 backdrop-blur-md transition-colors duration-300 hover:border-primary/40"
+                className="group gradient-border relative h-full overflow-hidden rounded-3xl border border-line bg-surface/90 p-4 transition-colors duration-300 hover:border-primary/40"
               >
                 <div className="relative mb-4 h-52 overflow-hidden rounded-2xl bg-dark">
                   {cert.image ? (
@@ -44,7 +44,7 @@ const Certificates = () => {
                     </div>
                   )}
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent opacity-70" />
-                  <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-primary/20 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100">
+                  <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-primary/20 opacity-0-[2px] transition-opacity duration-300 group-hover:opacity-100">
                     <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white">
                       <Award size={26} />
                     </span>
@@ -74,7 +74,7 @@ const Certificates = () => {
         })}
 
         <RevealOnScroll direction="up" delay={0.16}>
-          <div className="gradient-border relative flex h-full flex-col items-center justify-center overflow-hidden rounded-3xl border border-dashed border-line bg-surface/50 p-8 text-center backdrop-blur-md">
+          <div className="gradient-border relative flex h-full flex-col items-center justify-center overflow-hidden rounded-3xl border border-dashed border-line bg-surface/50 p-8 text-center">
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/20">
               <GraduationCap size={26} />
             </div>

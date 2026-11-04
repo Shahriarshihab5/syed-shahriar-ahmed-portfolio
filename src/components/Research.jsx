@@ -43,10 +43,10 @@ const Research = () => {
 
   return (
     <section id="research" className="section-shell relative overflow-hidden">
-      <div className="pointer-events-none absolute right-0 top-20 h-80 w-80 rounded-full bg-primary/10 blur-[130px]" />
 
       <SectionHeading
         eyebrow="Research"
+        number="03"
         icon={BookOpen}
         title="Research &"
         highlight="Publications"
@@ -67,7 +67,7 @@ const Research = () => {
               <RevealOnScroll key={research.id} direction="up" delay={index * 0.08}>
                 <motion.article
                   whileHover={{ y: -4 }}
-                  className={`card-lift gradient-border relative overflow-hidden rounded-3xl border bg-surface/75 p-6 backdrop-blur-md transition-colors duration-300 md:p-8 ${tone.card}`}
+                  className={`card-lift gradient-border relative overflow-hidden rounded-3xl border bg-surface/90 p-6 transition-colors duration-300 md:p-8 ${tone.card}`}
                 >
                   <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-primary/5 blur-3xl" />
 

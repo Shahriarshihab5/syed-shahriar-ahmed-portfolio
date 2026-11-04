@@ -25,9 +25,8 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative overflow-hidden border-t border-line bg-dark/70 backdrop-blur-md">
+    <footer className="relative overflow-hidden border-t border-line bg-dark/70">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/70 to-transparent" />
-      <div className="pointer-events-none absolute -bottom-32 left-1/2 h-64 w-[40rem] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-14 md:px-10">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_1fr]">
@@ -110,7 +109,7 @@ const Footer = () => {
                     rel="noopener noreferrer"
                     aria-label={social.label}
                     whileHover={{ y: -3 }}
-                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-surface/70 text-primary transition-all duration-300 hover:border-primary/50 hover:bg-primary hover:text-white"
+                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-surface/90 text-primary transition-all duration-300 hover:border-primary/50 hover:bg-primary hover:text-white"
                   >
                     <Icon size={17} />
                   </motion.a>
@@ -147,7 +146,7 @@ const Footer = () => {
               smooth
               duration={600}
               aria-label="Back to top"
-              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-line bg-surface/70 text-muted transition-all duration-300 hover:border-primary/50 hover:text-primary"
+              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-line bg-surface/90 text-muted transition-all duration-300 hover:border-primary/50 hover:text-primary"
             >
               <ArrowUp size={15} />
             </Link>

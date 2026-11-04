@@ -36,7 +36,7 @@ The PIN is a convenience lock in the browser. The real protection for publishing
 - Research and publications
 - Certificates (with image upload)
 - Life & leadership activities (with image galleries)
-- Profile details and the downloadable CV
+- Profile details, hero portrait, and the downloadable CV
 - Visibility, ordering, and deletion for every item
 
 Every edit is saved to a local draft immediately. Use **Publish** to commit it to GitHub.
@@ -51,9 +51,20 @@ Every edit is saved to a local draft immediately. Use **Publish** to commit it t
 
 The token is stored in `sessionStorage` by default, or `localStorage` if you tick “Remember this token on this device”. It is never written into `content.json`.
 
-### CV updates
+### CV and photo updates
 
 Upload a new PDF from **Admin → Profile & CV**. The file is committed to `public/` on publish, and the site links to it with a cache-busting version so visitors always get the latest CV.
+
+Upload a new hero portrait in the same tab. The image is compressed in the browser, committed under `public/uploads/` on publish, and can be removed at any time to fall back to the default photo.
+
+## Theme
+
+- Dark mode is the default for new visitors.
+- A sun/moon button (top-right) switches between dark and light mode.
+- Light mode defaults to the **Emerald** palette; dark mode defaults to **Sunset**.
+- Each mode remembers the palette you last chose there.
+- The palette menu beside the sun/moon button offers Sunset, Aurora, Emerald, and Azure.
+- Preferences are stored in `localStorage`, so they persist between visits.
 
 ## Content source
 
