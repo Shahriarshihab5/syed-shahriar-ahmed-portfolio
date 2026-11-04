@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-04T07:57:39.134Z",
+  "updatedAt": "2026-11-04T09:23:34.872Z",
   "profile": {
     "name": "Syed Shahriar Ahmed",
     "role": "Data Analyst & BI Specialist",
@@ -321,6 +321,15 @@
       "date": "2026",
       "image": "/Syed Shahriar Ahmed - Intro to SQL.png",
       "link": "https://drive.google.com/file/d/1FHm-SUO4JDKqFL4DyYpeNAsc6VbPf7tz/view?usp=sharing",
+      "visible": true
+    },
+    {
+      "id": "cert-mw1w62lf-umes",
+      "title": "Data Analysis Job Ready Program",
+      "issuer": "Ostad",
+      "date": "2026",
+      "image": "/uploads/img-1ritum7.jpg",
+      "link": "https://ostad.app/share/certificate/c47405-syed-shahriar-ahmed",
       "visible": true
     }
   ],
