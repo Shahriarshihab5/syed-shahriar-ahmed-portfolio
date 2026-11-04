@@ -1,79 +1,82 @@
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, Heart, ExternalLink } from "lucide-react";
+import { ArrowUp, Github, Heart, Linkedin, Mail, MapPin, Sparkles } from "lucide-react";
 import { Link } from "react-scroll";
+import { useContent } from "./ContentContext";
+
+const quickLinks = [
+  { id: "home", text: "Home" },
+  { id: "about", text: "About" },
+  { id: "projects", text: "Projects" },
+  { id: "research", text: "Research" },
+  { id: "activities", text: "Activities" },
+  { id: "certificates", text: "Certificates" },
+  { id: "contact", text: "Contact" },
+];
 
 const Footer = () => {
+  const { content } = useContent();
+  const profile = content.profile || {};
   const currentYear = new Date().getFullYear();
 
-  const quickLinks = [
-    { id: "home", text: "Home" },
-    { id: "about", text: "About" },
-    { id: "projects", text: "Projects" },
-    { id: "research", text: "Research" },
-    { id: "activities", text: "Activities" },
-    { id: "certificates", text: "Certificates" },
-    { id: "contact", text: "Contact" },
-  ];
-
   const socialLinks = [
-    {
-      icon: <Github size={20} />,
-      url: "https://github.com/Shahriarshihab5",
-      label: "GitHub",
-    },
-    {
-      icon: <Linkedin size={20} />,
-      url: "https://www.linkedin.com/in/syed-shahriar-ahmed-183233208/",
-      label: "LinkedIn",
-    },
-    {
-      icon: <Mail size={20} />,
-      url: "mailto:syedshahriarahmed0@gmail.com", // Updated to professional email 
-      label: "Email",
-    },
+    { icon: Github, url: profile.github, label: "GitHub" },
+    { icon: Linkedin, url: profile.linkedin, label: "LinkedIn" },
+    { icon: Mail, url: `mailto:${profile.email}`, label: "Email" },
   ];
 
   return (
-    <footer className="bg-[#0a0a0a] border-t border-[#1a1a1a] text-light">
-      <div className="max-w-7xl mx-auto px-8 md:px-20 py-12">
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-8">
-          {/* Brand Section */}
+    <footer className="relative overflow-hidden border-t border-line bg-dark/70 backdrop-blur-md">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/70 to-transparent" />
+      <div className="pointer-events-none absolute -bottom-32 left-1/2 h-64 w-[40rem] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 py-14 md:px-10">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_1fr]">
+          {/* Brand */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h3 className="text-2xl font-bold text-primary mb-4">
-              Syed Shahriar Ahmed
-            </h3>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-              Data Analyst & BI Specialist leveraging engineering logic to 
-              transform complex data into actionable business intelligence.
+            <Link to="home" smooth duration={500} className="inline-flex cursor-pointer items-center gap-3">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary via-secondary to-accent p-[1.5px] shadow-lg shadow-primary/25">
+                <span className="flex h-full w-full items-center justify-center rounded-[10px] bg-surface text-[11px] font-black text-light">
+                  SSA
+                </span>
+              </span>
+              <span className="font-display text-lg font-bold text-light">
+                {profile.name || "Syed Shahriar Ahmed"}
+              </span>
+            </Link>
+
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">
+              Data Analyst &amp; BI Specialist leveraging engineering logic to transform complex
+              data into actionable business intelligence.
+            </p>
+
+            <p className="mt-4 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-muted">
+              <MapPin size={11} className="text-primary" />
+              {profile.location || "Dhaka, Bangladesh"}
             </p>
           </motion.div>
 
-          {/* Quick Links - Expanded for new sections */}
+          {/* Navigation */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="md:pl-12"
+            transition={{ duration: 0.5, delay: 0.08 }}
           >
-            <h4 className="text-lg font-semibold text-white mb-4">
-              Navigation
-            </h4>
-            <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
+            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-light">Navigation</h4>
+            <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5">
               {quickLinks.map((link) => (
                 <li key={link.id}>
                   <Link
                     to={link.id}
-                    smooth={true}
+                    smooth
                     duration={500}
-                    offset={-80}
-                    className="text-gray-400 hover:text-primary transition-colors cursor-pointer text-sm inline-block"
+                    offset={-84}
+                    className="inline-block cursor-pointer text-sm text-muted transition-colors hover:text-primary"
                   >
                     {link.text}
                   </Link>
@@ -82,58 +85,74 @@ const Footer = () => {
             </ul>
           </motion.div>
 
-          {/* Connect Section */}
+          {/* Connect */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.16 }}
           >
-            <h4 className="text-lg font-semibold text-white mb-4">
-              Let's Collaborate
+            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-light">
+              Let&apos;s Collaborate
             </h4>
-            <p className="text-gray-400 text-sm mb-6">
-              Open to discussing data-driven insights and fintech ecosystem 
-              opportunities.
+            <p className="mt-4 text-sm leading-relaxed text-muted">
+              Open to data-driven insights, BI consulting, and software opportunities.
             </p>
-            <div className="flex gap-4">
-              {socialLinks.map((social, index) => (
-                <motion.a
-                  key={index}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1, y: -3 }}
-                  className="w-10 h-10 flex items-center justify-center bg-[#1a1a1a] rounded-lg border border-[#2a2a2a] text-primary hover:bg-primary hover:text-dark hover:shadow-[0_0_15px_#ff4c29] transition-all"
-                  aria-label={social.label}
-                >
-                  {social.icon}
-                </motion.a>
-              ))}
+
+            <div className="mt-5 flex gap-3">
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <motion.a
+                    key={social.label}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                    whileHover={{ y: -3 }}
+                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-surface/70 text-primary transition-all duration-300 hover:border-primary/50 hover:bg-primary hover:text-white"
+                  >
+                    <Icon size={17} />
+                  </motion.a>
+                );
+              })}
             </div>
+
+            <a
+              href={`mailto:${profile.email}`}
+              className="mt-5 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-primary transition-colors hover:bg-primary hover:text-white"
+            >
+              <Sparkles size={12} />
+              Start a conversation
+            </a>
           </motion.div>
         </div>
 
-        {/* Bottom Bar */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="pt-8 border-t border-[#1a1a1a] flex flex-col md:flex-row justify-between items-center gap-4"
-        >
-          <p className="text-gray-500 text-sm text-center md:text-left font-medium">
+        {/* Bottom bar */}
+        <div className="mt-12 flex flex-col items-center justify-between gap-5 border-t border-line pt-7 md:flex-row">
+          <p className="text-center text-xs font-medium text-muted md:text-left">
             © {currentYear} Syed Shahriar Ahmed. Built for Business Intelligence.
           </p>
-          <div className="flex items-center gap-6">
-            <p className="text-gray-500 text-[10px] uppercase tracking-widest flex items-center gap-1 font-bold">
-              Engineering <span className="text-primary">•</span> Data <span className="text-primary">•</span> Leadership
+
+          <div className="flex flex-wrap items-center justify-center gap-5">
+            <p className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-[0.2em] text-muted">
+              Engineering <span className="text-primary">•</span> Data{" "}
+              <span className="text-primary">•</span> Leadership
             </p>
-            <p className="text-gray-500 text-sm flex items-center gap-1">
-              Made with <Heart size={14} className="text-primary fill-primary" /> using React
+            <p className="flex items-center gap-1 text-xs text-muted">
+              Made with <Heart size={12} className="fill-primary text-primary" /> using React
             </p>
+            <Link
+              to="home"
+              smooth
+              duration={600}
+              aria-label="Back to top"
+              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-line bg-surface/70 text-muted transition-all duration-300 hover:border-primary/50 hover:text-primary"
+            >
+              <ArrowUp size={15} />
+            </Link>
           </div>
-        </motion.div>
+        </div>
       </div>
     </footer>
   );

@@ -1,194 +1,347 @@
-import { motion } from "framer-motion";
+import { useMemo } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
+import {
+  ArrowDown,
+  ArrowUpRight,
+  Download,
+  Github,
+  Linkedin,
+  MapPin,
+  BarChart3,
+  Database,
+  BrainCircuit,
+  Award,
+} from "lucide-react";
+import { useContent } from "./ContentContext";
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.09, delayChildren: 0.15 },
+  },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 18 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const stats = [
+  { value: "15+", label: "Projects" },
+  { value: "1", label: "IEEE Paper" },
+  { value: "50k+", label: "Records Modeled" },
+];
 
 const Hero = () => {
+  const { content } = useContent();
+  const profile = content.profile || {};
+  const nameParts = String(profile.name || "Syed Shahriar Ahmed").trim().split(/\s+/);
+  const firstName = nameParts.length > 1 ? nameParts.slice(0, -1).join(" ") : nameParts[0];
+  const lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : "";
+  const tiltXValue = useMotionValue(0);
+  const tiltYValue = useMotionValue(0);
+  const rotateX = useSpring(tiltXValue, { stiffness: 120, damping: 18 });
+  const rotateY = useSpring(tiltYValue, { stiffness: 120, damping: 18 });
+
+  // Deterministic particle positions (no re-randomising on re-render).
+  const particles = useMemo(
+    () =>
+      Array.from({ length: 16 }, (_, index) => ({
+        left: (index * 37 + 11) % 100,
+        top: (index * 53 + 7) % 100,
+        delay: (index % 5) * 0.7,
+        duration: 6 + (index % 4),
+        size: index % 3 === 0 ? 3 : 2,
+      })),
+    []
+  );
+
+  const handleTilt = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+    tiltXValue.set(y * -12);
+    tiltYValue.set(x * 12);
+  };
+
+  const resetTilt = () => {
+    tiltXValue.set(0);
+    tiltYValue.set(0);
+  };
+
   return (
     <section
       id="home"
-      // Added contain: 'paint' to isolate animations and prevent layout jitters
-      style={{ contain: 'paint' }}
-      className="min-h-screen flex flex-col md:flex-row items-center justify-between px-8 md:px-20 pt-28 bg-[#0d0d0d] text-light relative overflow-hidden"
+      className="relative flex min-h-screen items-center overflow-hidden px-6 pb-24 pt-32 md:px-12 lg:px-20 lg:pt-28"
     >
-      {/* Optimized Background Gradient with Hardware Acceleration */}
-      <motion.div 
-        className="absolute inset-0 bg-gradient-to-br from-primary/15 via-primary/5 to-transparent blur-3xl"
-        style={{ willChange: "opacity" }}
-        animate={{
-          opacity: [0.3, 0.45, 0.3],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
+      {/* Ambient light */}
+      <div className="pointer-events-none absolute left-1/2 top-1/3 h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-primary/10 blur-[130px]" />
+      <div className="pointer-events-none absolute -right-32 top-24 h-96 w-96 rounded-full bg-secondary/10 blur-[120px]" />
 
-      {/* Optimized Particles - Reduced count for smoother frame rates */}
-      <div className="absolute inset-0 pointer-events-none">
-        {[...Array(12)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-primary/20 rounded-full"
+      {/* Floating particles */}
+      <div className="pointer-events-none absolute inset-0">
+        {particles.map((particle, index) => (
+          <motion.span
+            key={index}
+            className="absolute rounded-full bg-secondary/50"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              willChange: "transform, opacity"
+              left: `${particle.left}%`,
+              top: `${particle.top}%`,
+              width: particle.size,
+              height: particle.size,
+              willChange: "transform, opacity",
             }}
-            animate={{
-              y: [0, -40, 0],
-              opacity: [0, 0.8, 0],
-            }}
+            animate={{ y: [0, -26, 0], opacity: [0, 0.85, 0] }}
             transition={{
-              duration: 4 + Math.random() * 2,
+              duration: particle.duration,
+              delay: particle.delay,
               repeat: Infinity,
-              delay: Math.random() * 2,
+              ease: "easeInOut",
             }}
           />
         ))}
       </div>
 
-      {/* Left Text Section - Content updated from CV */}
-      <motion.div
-        className="text-left z-10 md:w-1/2"
-        initial={{ opacity: 0, x: -40 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-      >
-        <motion.p 
-          className="text-lg text-primary font-semibold mb-2"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-        >
-          Hello 👋
-        </motion.p>
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-16 lg:grid-cols-[1.05fr_0.95fr]">
+        {/* ---------------- Left: copy ---------------- */}
+        <motion.div variants={container} initial="hidden" animate="show" className="text-left">
+          <motion.div variants={item} className="mb-6 inline-flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-300">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              </span>
+              {profile.availability || "Available for opportunities"}
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface/60 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-muted backdrop-blur">
+              <MapPin size={11} className="text-primary" />
+              {profile.location || "Dhaka, Bangladesh"}
+            </span>
+          </motion.div>
 
-        <motion.h1 
-          className="text-4xl md:text-5xl font-bold text-white mb-3"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-        >
-          I'm{" "}
-          <span className="text-primary relative inline-block">
-            Syed Shahriar Ahmed
-            <motion.span
-              className="absolute -bottom-2 left-0 w-full h-1 bg-primary"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ delay: 0.8, duration: 0.6 }}
-              style={{ transformOrigin: "left" }}
-            />
-          </span>
-        </motion.h1>
-
-        {/* Updated Typing Animation for Data Analytics Focus */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-          className="mb-6 min-h-[3rem]"
-        >
-          <h2 className="text-2xl md:text-3xl font-semibold text-white">
-            <TypeAnimation
-              sequence={[
-                "Data Analyst",
-                2000,
-                "BI Developer",
-                2000,
-                "SQL & Power BI Expert",
-                2000,
-                "Published Researcher",
-                2000,
-              ]}
-              wrapper="span"
-              speed={50}
-              repeat={Infinity}
-            />
-          </h2>
-        </motion.div>
-
-        {/* Updated Description focusing on BI and actionable insights */}
-        <motion.p 
-          className="text-gray-400 mb-8 max-w-md leading-relaxed"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.6 }}
-        >
-          Computer Science graduate specializing in transforming raw data into actionable 
-          business intelligence. Expert in building high-impact dashboards and 
-          models that drive informed decision-making.
-        </motion.p>
-
-        <motion.div 
-          className="flex space-x-4"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.6 }}
-        >
-          <motion.a
-            href="#contact"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-6 py-3 rounded-lg bg-primary text-white font-semibold transition-all relative overflow-hidden group"
+          <motion.p
+            variants={item}
+            className="mb-2 font-display text-sm font-semibold uppercase tracking-[0.3em] text-primary"
           >
-            <span className="relative z-10 font-bold uppercase tracking-wide">Hire Me</span>
-            <span className="absolute inset-0 bg-gradient-to-r from-orange-600 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </motion.a>
+            Hello, I&apos;m
+          </motion.p>
 
-          {/* Corrected Resume filename based on CV document */}
-          <motion.a
-            href="/SYED_SHAHRIAR_AHMED_CV.pdf"
-            download="SYED_SHAHRIAR_AHMED_CV.pdf"
-            whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 76, 41, 0.1)" }}
-            whileTap={{ scale: 0.95 }}
-            className="px-6 py-3 rounded-lg border-2 border-primary text-primary font-bold uppercase tracking-wide transition-all"
+          <motion.h1
+            variants={item}
+            className="font-display text-[2.7rem] font-bold leading-[1.02] tracking-tight text-light sm:text-6xl lg:text-[4.4rem]"
           >
-            Download CV
-          </motion.a>
+            {firstName}
+            {lastName && (
+              <span className="mt-1 block text-gradient animate-gradient-x">{lastName}</span>
+            )}
+          </motion.h1>
+
+          <motion.div variants={item} className="mt-5 min-h-[2.5rem]">
+            <h2 className="font-display text-xl font-semibold text-light/90 sm:text-2xl">
+              <span className="text-muted">I&apos;m a </span>
+              <TypeAnimation
+                sequence={[
+                  "Data Analyst",
+                  2000,
+                  "BI Developer",
+                  2000,
+                  "SQL & Power BI Expert",
+                  2000,
+                  "Published Researcher",
+                  2000,
+                ]}
+                wrapper="span"
+                speed={45}
+                repeat={Infinity}
+                className="text-secondary"
+              />
+            </h2>
+          </motion.div>
+
+          <motion.p
+            variants={item}
+            className="mt-5 max-w-xl text-sm leading-relaxed text-muted sm:text-base"
+          >
+            I transform raw data into{" "}
+            <span className="font-medium text-light">actionable business intelligence</span>{" "}
+            — designing high-impact dashboards, data models, and AI-powered tools that drive
+            confident decisions.
+          </motion.p>
+
+          <motion.div variants={item} className="mt-8 flex flex-wrap items-center gap-3">
+            <motion.a
+              href="#contact"
+              whileHover={{ y: -3 }}
+              whileTap={{ scale: 0.97 }}
+              className="shine group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-primary via-secondary to-accent px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary/30"
+            >
+              <span className="relative z-10">Let&apos;s Work Together</span>
+              <ArrowUpRight
+                size={17}
+                className="relative z-10 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </motion.a>
+
+            <motion.a
+              href={profile.cvUrl || "/Syed_Shahriar_Ahmed_Resume.pdf"}
+              download={profile.cvFileName || "Syed_Shahriar_Ahmed_Resume.pdf"}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ y: -3 }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-6 py-3.5 text-sm font-semibold text-light backdrop-blur transition-colors duration-300 hover:border-primary/50 hover:text-primary"
+            >
+              <Download size={16} />
+              Download CV
+            </motion.a>
+
+            <div className="ml-1 flex items-center gap-2">
+              {[
+                { icon: Github, href: profile.github, label: "GitHub" },
+                {
+                  icon: Linkedin,
+                  href: profile.linkedin,
+                  label: "LinkedIn",
+                },
+              ].map(({ icon: Icon, href, label }) => (
+                <motion.a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  whileHover={{ y: -2 }}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface/60 text-muted backdrop-blur transition-colors duration-300 hover:border-primary/50 hover:text-primary"
+                >
+                  <Icon size={17} />
+                </motion.a>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div
+            variants={item}
+            className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-line pt-6"
+          >
+            {stats.map((stat) => (
+              <div key={stat.label}>
+                <p className="font-display text-2xl font-bold text-light">
+                  <span className="text-gradient">{stat.value}</span>
+                </p>
+                <p className="mt-0.5 text-[10px] font-bold uppercase tracking-[0.18em] text-muted">
+                  {stat.label}
+                </p>
+              </div>
+            ))}
+          </motion.div>
         </motion.div>
-      </motion.div>
 
-      {/* Right Image Section with Performance Fixes */}
-      <motion.div
-        className="relative mt-12 md:mt-0 md:w-1/2 flex justify-center z-10"
-        initial={{ opacity: 0, x: 40 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-      >
-        {/* Rotating glow ring 1 - Optimized with will-change */}
+        {/* ---------------- Right: portrait ---------------- */}
         <motion.div
-          className="absolute w-[320px] h-[320px] md:w-[400px] md:h-[400px] rounded-full bg-primary/20 blur-2xl"
-          style={{ willChange: "transform", transformOrigin: "center" }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-        />
-
-        {/* Rotating glow ring 2 - Simplified animation */}
-        <motion.div
-          className="absolute w-[280px] h-[280px] md:w-[350px] md:h-[350px] rounded-full bg-orange-500/10 blur-2xl"
-          style={{ willChange: "transform", transformOrigin: "center" }}
-          animate={{ rotate: -360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        />
-
-        <motion.div
-          className="relative"
-          // Force hardware acceleration for the image container
-          style={{ transform: "translateZ(0)" }}
-          whileHover={{ scale: 1.02 }}
-          transition={{ duration: 0.3 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.9, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          className="relative mx-auto flex w-full max-w-[30rem] items-center justify-center lg:max-w-none"
         >
-          <motion.img
-            src="/cv.png"
-            alt="Syed Shahriar Ahmed - Data Analyst & BI Specialist"
-            className="w-64 md:w-80 rounded-full shadow-2xl relative z-10"
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-          />
+          <div className="relative aspect-square w-[19rem] sm:w-[23rem] lg:w-[26rem]">
+            {/* Rotating conic aura */}
+            <div className="animate-spin-slow absolute -inset-5 rounded-full bg-[conic-gradient(from_0deg,var(--accent-1),var(--accent-2),var(--accent-3),var(--accent-1))] opacity-30 blur-2xl" />
+            <div className="animate-spin-slower absolute -inset-2 rounded-full bg-[conic-gradient(from_180deg,transparent,var(--accent-2),transparent_55%,var(--accent-1),transparent)] opacity-70" />
+            <div className="absolute -inset-2 rounded-full border border-white/10" />
+
+            {/* Portrait with subtle 3D tilt */}
+            <motion.div
+              onPointerMove={handleTilt}
+              onPointerLeave={resetTilt}
+              style={{ rotateX, rotateY, transformPerspective: 1000 }}
+              className="relative h-full w-full overflow-hidden rounded-full border border-white/15 bg-surface shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)]"
+            >
+              <img
+                src="/cv.png"
+                alt="Syed Shahriar Ahmed — Data Analyst & BI Specialist"
+                className="h-full w-full object-cover"
+                loading="eager"
+              />
+              <div className="pointer-events-none absolute inset-0 rounded-full bg-gradient-to-t from-dark/60 via-transparent to-transparent" />
+              <div className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-inset ring-white/10" />
+            </motion.div>
+
+            {/* Floating skill chips */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.7, duration: 0.6 }}
+              className="animate-float-soft absolute -left-6 top-[14%] flex items-center gap-2 rounded-2xl border border-line bg-surface/80 px-3.5 py-2.5 shadow-xl backdrop-blur-xl sm:-left-10"
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                <BarChart3 size={16} />
+              </span>
+              <span className="text-[11px] font-bold text-light">Power BI</span>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.85, duration: 0.6 }}
+              className="animate-float absolute -right-4 top-[42%] flex items-center gap-2 rounded-2xl border border-line bg-surface/80 px-3.5 py-2.5 shadow-xl backdrop-blur-xl sm:-right-8"
+              style={{ animationDelay: "1.2s" }}
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary/15 text-secondary">
+                <Database size={16} />
+              </span>
+              <span className="text-[11px] font-bold text-light">SQL</span>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1, duration: 0.6 }}
+              className="animate-float-soft absolute -bottom-2 left-[8%] flex items-center gap-2 rounded-2xl border border-line bg-surface/80 px-3.5 py-2.5 shadow-xl backdrop-blur-xl"
+              style={{ animationDelay: "0.6s" }}
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/15 text-accent">
+                <BrainCircuit size={16} />
+              </span>
+              <span className="text-[11px] font-bold text-light">Python / ML</span>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.15, duration: 0.6 }}
+              className="animate-float absolute -bottom-6 right-[4%] flex items-center gap-2 rounded-2xl border border-emerald-400/25 bg-surface/80 px-3.5 py-2.5 shadow-xl backdrop-blur-xl"
+              style={{ animationDelay: "1.8s" }}
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-400/15 text-emerald-300">
+                <Award size={16} />
+              </span>
+              <span className="text-[11px] font-bold text-light">IEEE Published</span>
+            </motion.div>
+          </div>
         </motion.div>
-      </motion.div>
+      </div>
+
+      {/* Scroll indicator */}
+      <motion.a
+        href="#about"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.6, duration: 0.8 }}
+        className="absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-muted transition-colors hover:text-primary md:flex"
+        aria-label="Scroll to about section"
+      >
+        <span className="text-[9px] font-bold uppercase tracking-[0.3em]">Scroll</span>
+        <span className="flex h-9 w-5 items-start justify-center rounded-full border border-line p-1">
+          <span className="animate-scroll-dot h-1.5 w-1.5 rounded-full bg-primary" />
+        </span>
+        <ArrowDown size={13} />
+      </motion.a>
     </section>
   );
 };

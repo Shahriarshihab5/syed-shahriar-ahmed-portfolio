@@ -1,14 +1,33 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-accent="sunset">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#06060c" />
+    <script>
+      // Apply the saved palette before first paint to avoid a colour flash.
+      (function () {
+        try {
+          var saved = localStorage.getItem("portfolio-accent-v2");
+          document.documentElement.dataset.accent = saved || "sunset";
+        } catch (error) {
+          document.documentElement.dataset.accent = "sunset";
+        }
+      })();
+    </script>
     
     <title>Syed Shahriar Ahmed | Data Analyst & BI Specialist Portfolio</title>
     <meta name="title" content="Syed Shahriar Ahmed | Data Analyst & BI Specialist Portfolio" />
     <meta name="description" content="Portfolio of Syed Shahriar Ahmed, a Data Analyst and BI Specialist based in Dhaka, Bangladesh. Expert in Power BI, SQL, Python, and IEEE Published Researcher." />
     <meta name="author" content="Syed Shahriar Ahmed" />
     <meta name="robots" content="index, follow" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
   
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-.png" />

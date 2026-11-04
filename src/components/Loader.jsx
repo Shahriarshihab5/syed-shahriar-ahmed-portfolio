@@ -1,50 +1,50 @@
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Loader = () => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
+      setProgress((previous) => {
+        if (previous >= 100) {
           clearInterval(timer);
           return 100;
         }
-        return prev + 1;
+        return previous + 1;
       });
-    }, 25); // Adjust speed here (25ms = ~2.5 seconds total)
+    }, 20);
 
     return () => clearInterval(timer);
   }, []);
 
   return (
     <motion.div
-      className="fixed inset-0 z-[200] flex items-center justify-center bg-[#0d0d0d]"
+      className="fixed inset-0 z-[200] flex items-center justify-center overflow-hidden bg-dark"
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="text-center">
-        {/* Circular Progress Bar */}
-        <div className="relative w-32 h-32 mx-auto mb-8">
-          {/* Background Circle */}
-          <svg className="w-full h-full transform -rotate-90">
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/15 blur-[120px]" />
+      <div className="grid-bg pointer-events-none absolute inset-0 opacity-60" />
+
+      <div className="relative text-center">
+        <div className="relative mx-auto mb-8 h-32 w-32">
+          <svg className="h-full w-full -rotate-90">
             <circle
               cx="64"
               cy="64"
               r="56"
-              stroke="rgba(255, 76, 41, 0.2)"
-              strokeWidth="8"
+              stroke="color-mix(in srgb, var(--accent-1) 18%, transparent)"
+              strokeWidth="7"
               fill="none"
             />
-            {/* Progress Circle */}
             <motion.circle
               cx="64"
               cy="64"
               r="56"
-              stroke="#ff4c29"
-              strokeWidth="8"
+              stroke="var(--accent-1)"
+              strokeWidth="7"
               fill="none"
               strokeLinecap="round"
               initial={{ strokeDasharray: "0 352" }}
@@ -53,92 +53,58 @@ const Loader = () => {
             />
           </svg>
 
-          {/* Percentage Text in Center */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <motion.span
-              className="text-3xl font-bold text-primary"
-              key={progress}
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.1 }}
-            >
-              {progress}%
-            </motion.span>
+            <span className="text-gradient font-display text-3xl font-bold">{progress}%</span>
           </div>
 
-          {/* Spinning Glow Effect */}
           <motion.div
             className="absolute inset-0 rounded-full"
             style={{
-              background: "radial-gradient(circle, rgba(255,76,41,0.3) 0%, transparent 70%)",
+              background:
+                "radial-gradient(circle, color-mix(in srgb, var(--accent-1) 28%, transparent) 0%, transparent 70%)",
             }}
             animate={{ rotate: 360 }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "linear",
-            }}
+            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
           />
         </div>
 
-        {/* Name Animation */}
         <motion.h1
-          className="text-3xl md:text-4xl font-bold text-primary mb-2"
-          initial={{ opacity: 0, y: 20 }}
+          className="font-display text-2xl font-bold text-light md:text-3xl"
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.8 }}
+          transition={{ delay: 0.15, duration: 0.7 }}
         >
-          Syed Shahriar Ahmed
+          Syed Shahriar <span className="text-gradient animate-gradient-x">Ahmed</span>
         </motion.h1>
 
-        {/* Loading Text */}
         <motion.p
-          className="text-gray-400 text-lg mb-4"
+          className="mt-2 text-xs font-medium uppercase tracking-[0.25em] text-muted"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
+          transition={{ delay: 0.35, duration: 0.7 }}
         >
-          {progress < 100 ? "Loading Portfolio..." : "Almost there!"}
+          {progress < 100 ? "Preparing portfolio" : "Welcome"}
         </motion.p>
 
-        {/* Progress Bar */}
-        <motion.div
-          className="w-64 h-1.5 bg-gray-800 rounded-full mx-auto overflow-hidden"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-        >
+        <div className="mx-auto mt-6 h-1.5 w-64 overflow-hidden rounded-full bg-white/5">
           <motion.div
-            className="h-full bg-gradient-to-r from-primary to-orange-500 rounded-full"
+            className="h-full rounded-full bg-gradient-to-r from-primary via-secondary to-accent"
             initial={{ width: "0%" }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.1 }}
           />
-        </motion.div>
+        </div>
 
-        {/* Loading Dots Animation */}
-        <motion.div
-          className="flex gap-2 justify-center mt-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-        >
+        <div className="mt-6 flex justify-center gap-2">
           {[0, 1, 2].map((index) => (
-            <motion.div
+            <motion.span
               key={index}
-              className="w-2.5 h-2.5 bg-primary rounded-full"
-              animate={{
-                scale: [1, 1.5, 1],
-                opacity: [0.5, 1, 0.5],
-              }}
-              transition={{
-                duration: 1,
-                repeat: Infinity,
-                delay: index * 0.2,
-              }}
+              className="h-2 w-2 rounded-full bg-primary"
+              animate={{ scale: [1, 1.5, 1], opacity: [0.45, 1, 0.45] }}
+              transition={{ duration: 1, repeat: Infinity, delay: index * 0.2 }}
             />
           ))}
-        </motion.div>
+        </div>
       </div>
     </motion.div>
   );

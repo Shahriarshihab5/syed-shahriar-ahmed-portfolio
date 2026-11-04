@@ -120,9 +120,14 @@ const Chatbot = () => {
         whileTap={{ scale: 0.9 }}
         animate={{ y: [0, -10, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        className="fixed z-50 w-16 h-16 rounded-full bg-primary shadow-lg flex items-center justify-center border-4 border-white bottom-24 md:bottom-8 right-8"
+        aria-label={isOpen ? "Close assistant" : "Open assistant"}
+        className="fixed bottom-24 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary via-secondary to-accent shadow-lg shadow-primary/40 ring-4 ring-dark/70 md:bottom-8 md:right-8 md:h-16 md:w-16"
       >
-        {isOpen ? <X size={28} className="text-white" /> : <MessageCircle size={28} className="text-white" />}
+        {isOpen ? (
+          <X size={26} className="text-white" />
+        ) : (
+          <MessageCircle size={26} className="text-white" />
+        )}
       </motion.button>
 
       <AnimatePresence>
@@ -131,25 +136,28 @@ const Chatbot = () => {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-32 md:bottom-28 right-8 z-50 w-96 h-[550px] bg-[#1a1a1a] rounded-2xl shadow-2xl border border-[#2a2a2a] flex flex-col overflow-hidden"
+            className="fixed bottom-32 right-4 z-50 flex h-[70vh] max-h-[550px] w-[calc(100vw-2rem)] max-w-96 flex-col overflow-hidden rounded-2xl border border-line bg-surface/95 shadow-2xl shadow-black/60 backdrop-blur-xl md:bottom-28 md:right-8"
           >
             {/* Header */}
-            <div className="bg-primary p-4 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden">
-                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Shahriar&backgroundColor=ff4c29" alt="AI Assistant" className="w-full h-full" />
+            <div className="flex items-center gap-3 bg-gradient-to-r from-primary to-secondary p-4">
+              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white/15 ring-1 ring-white/30">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Shahriar&backgroundColor=8b5cf6" alt="AI Assistant" className="h-full w-full" />
               </div>
               <div>
-                <h3 className="text-white font-semibold">Data Intelligence Assistant</h3>
-                <p className="text-white/80 text-xs">Insights ready</p>
+                <h3 className="font-display text-sm font-semibold text-white">Data Intelligence Assistant</h3>
+                <p className="flex items-center gap-1.5 text-[11px] text-white/80">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-300" />
+                  Insights ready
+                </p>
               </div>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <div className="flex-1 space-y-4 overflow-y-auto p-4">
               {messages.map((message, index) => (
                 <motion.div key={index} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}>
-                  <div className={`flex gap-2 max-w-[85%] ${message.isBot ? "" : "flex-row-reverse"}`}>
-                    <div className={`p-3 rounded-xl ${message.isBot ? "bg-[#2a2a2a] text-gray-200" : "bg-primary text-white shadow-lg"}`}>
+                  <div className={`flex max-w-[85%] gap-2 ${message.isBot ? "" : "flex-row-reverse"}`}>
+                    <div className={`rounded-xl p-3 ${message.isBot ? "border border-line bg-surface-2 text-light/90" : "bg-gradient-to-r from-primary to-secondary text-white shadow-lg"}`}>
                       <p className="text-sm whitespace-pre-line">{message.text}</p>
                     </div>
                   </div>
@@ -157,9 +165,9 @@ const Chatbot = () => {
               ))}
               {isTyping && (
                 <div className="flex justify-start gap-2">
-                  <div className="bg-[#2a2a2a] p-3 rounded-lg flex gap-1">
+                  <div className="flex gap-1 rounded-lg border border-line bg-surface-2 p-3">
                     {[0, 0.2, 0.4].map((d) => (
-                      <motion.div key={d} className="w-1.5 h-1.5 bg-gray-400 rounded-full" animate={{ y: [0, -5, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: d }} />
+                      <motion.div key={d} className="h-1.5 w-1.5 rounded-full bg-muted" animate={{ y: [0, -5, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: d }} />
                     ))}
                   </div>
                 </div>
@@ -168,7 +176,7 @@ const Chatbot = () => {
             </div>
 
             {/* Input */}
-            <div className="p-4 border-t border-[#2a2a2a] bg-[#1a1a1a]">
+            <div className="border-t border-line bg-surface/80 p-4">
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -176,9 +184,9 @@ const Chatbot = () => {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Ask about my SQL or BI skills..."
-                  className="flex-1 bg-[#0d0d0d] text-white px-4 py-2 rounded-lg border border-[#2a2a2a] focus:outline-none focus:border-primary transition-all text-sm"
+                  className="flex-1 rounded-lg border border-line bg-dark/60 px-4 py-2 text-sm text-light placeholder:text-muted/60 transition-all focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
-                <button onClick={handleSend} className="bg-primary text-white p-2 rounded-lg hover:shadow-primary/50 shadow-lg transition-all">
+                <button onClick={handleSend} aria-label="Send message" className="rounded-lg bg-primary p-2 text-white shadow-lg transition-all hover:shadow-primary/50">
                   <Send size={18} />
                 </button>
               </div>
